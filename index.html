@@ -11,18 +11,21 @@
     button { padding:8px 10px; border-radius:10px; border:1px solid rgba(0,0,0,.15); background:#fff; cursor:pointer; }
     button.primary { background:#16a34a; color:#fff; border-color:#16a34a; }
     button.warn { background:#f59e0b; color:#111; border-color:#f59e0b; }
-    button.info { background:#3b82f6; color:#fff; border-color:#3b82f6; }
 
     input[type="text"] { padding:8px 10px; border-radius:10px; border:1px solid rgba(0,0,0,.2); min-width: 280px; }
+    select { padding:8px 10px; border-radius:10px; border:1px solid rgba(0,0,0,.2); background:#fff; }
+
     .muted { opacity: .75; }
 
-    /* 抽選結果用のカード（縦） */
+    /* 共通カード */
     .card{
       display:flex; align-items:center; gap:10px;
       padding:6px 8px; border-radius:12px;
       border:1px solid rgba(0,0,0,0.08);
       margin:6px 0;
+      background:#fff;
     }
+
     .face{
       width:52px; height:52px; border-radius:12px;
       user-select:none; cursor:pointer;
@@ -41,8 +44,6 @@
     }
     .small{ font-size:12px; opacity:.85; }
 
-    #result { max-width: 820px; }
-
     /* 全選択ボタンだけ色 */
     #selectAll {
       background: #a855f7;
@@ -52,8 +53,6 @@
 
     /* =========================
        一覧を “横並びタイル” にする（強制）
-       - 名前は隠す（検索はJS側なのでOK）
-       - ホバーは app.js の title で出る
        ========================= */
     #list{
       display: grid !important;
@@ -64,21 +63,57 @@
     #list .card{
       margin: 0 !important;
       padding: 10px 6px !important;
+
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
       gap: 6px !important;
+
       text-align: center;
       cursor: pointer;
+      position: relative; /* バッジ用 */
     }
     #list .face{
       width: 72px !important;
       height: 72px !important;
       border-radius: 14px !important;
     }
+    /* 一覧は文字を隠す（検索はJS側なのでOK） */
     #list .card > div{
       display: none !important;
+    }
+
+    /* 角バッジ（★4/★5/旅人属性） */
+    .corner-badge{
+      position:absolute;
+      top:6px;
+      right:6px;
+      font-size:11px;
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.18);
+      background: rgba(255,255,255,.92);
+      pointer-events:none;
+    }
+    .corner-badge.left{
+      left:6px;
+      right:auto;
+    }
+
+    /* =========================
+       抽選結果も横並び（グリッド）
+       ========================= */
+    #resultCards{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+      max-width: 1100px;
+    }
+    /* 抽選結果のカードは横レイアウトのまま */
+    #resultCards .card{
+      margin: 0;
+      position: relative; /* バッジ用 */
     }
   </style>
 </head>
@@ -94,7 +129,9 @@
   <div style="margin:10px 0;" class="muted" id="status">読み込み中…</div>
 
   <div class="row">
-    <label>検索: <input id="q" type="text" placeholder="例：雷電 / アルベド / raiden / albedo" /></label>
+    <label>検索:
+      <input id="q" type="text" placeholder="例：雷電 / アルベド / raiden / albedo" />
+    </label>
 
     <label>表示数:
       <input id="maxShow" type="range" min="1" max="300" step="1" value="60" />
@@ -117,6 +154,14 @@
     <label id="ownedKWrap">所持から:
       <select id="ownedK">
         <option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option>
+      </select>
+    </label>
+
+    <label>レア度:
+      <select id="rarityFilter">
+        <option value="all" selected>全部</option>
+        <option value="5">★5のみ</option>
+        <option value="4">★4のみ</option>
       </select>
     </label>
 
