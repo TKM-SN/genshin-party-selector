@@ -18,7 +18,7 @@
   const ownedKWrap = el("ownedKWrap");
   const kleeBoost = el("kleeBoost");
 
-  // ★ 91止まり対策：stepを必ず1にする（HTMLと二重で安全）
+  // 91止まり対策：stepを必ず1にする（HTMLと二重で安全）
   maxShow.step = "1";
 
   let ALL = [];
@@ -38,7 +38,7 @@
 
   function updateStatus(extra="") {
     if (!ALL.length) {
-      setStatus("まだデータが読み込まれていません。上のボタンから読み込んでください。");
+      setStatus("読み込み中…");
       return;
     }
     const total = ALL.length;
@@ -56,13 +56,11 @@
     }[m]));
   }
 
-  // タイル: 表示はアイコンだけ（CSSで文字非表示）
-  // でも hover で分かるように title に名前を入れる
+  // 一覧はアイコンだけ（CSSで文字非表示）
+  // hoverで分かるように title に名前を入れる
   function cardHTML(c) {
     const owned = ownedIds.has(c.id);
     const cls = owned ? "owned" : "unowned";
-    const enLine = (c.en && c.en !== c.name) ? `<div class="small">EN: ${escapeHTML(c.en)}</div>` : "";
-
     return `
       <div class="card"
            data-id="${escapeHTML(c.id)}"
@@ -71,7 +69,6 @@
              onerror="this.onerror=null;this.src='${fallbackIcon}';" />
         <div>
           <div><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
-          ${enLine}
           <div class="small muted">顔クリックで所持/未所持切替（暗い=未所持 / 明るい=所持）</div>
         </div>
       </div>
@@ -80,7 +77,7 @@
 
   function renderList() {
     if (!ALL.length) {
-      list.innerHTML = "<div class='muted'>⚠️ 先に「データ読み込み」を押してください。</div>";
+      list.innerHTML = "<div class='muted'>読み込み中…</div>";
       return;
     }
     const query = q.value.trim().toLowerCase();
@@ -95,7 +92,7 @@
 
     list.innerHTML = filtered.map(cardHTML).join("");
 
-    // ★ タイル全体クリックで切替（押しやすい）
+    // タイル全体クリックで切替（押しやすい）
     list.querySelectorAll(".card").forEach(card => {
       card.addEventListener("click", () => {
         const cid = card.dataset.id;
@@ -177,12 +174,11 @@
           </div>
         </div>
       `).join("")}
-      <div class="muted">※ 押すたび結果が変わります（前回と完全一致なら再抽選）</div>
     `;
   }
 
   async function loadData() {
-    const r = await fetch(DATA_URL);
+    const r = await fetch(DATA_URL, { cache: "no-store" });
     if (!r.ok) throw new Error(`データ読み込み失敗: ${r.status}`);
     const data = await r.json();
     if (!Array.isArray(data)) throw new Error("characters_ja.json の形式が想定外");
@@ -190,25 +186,16 @@
     ALL = data;
     ALL.sort((a,b) => String(a.sort||"").localeCompare(String(b.sort||""), "ja"));
 
-    // ★ 91止まり対策：ここでも step=1 を念押し
     maxShow.step = "1";
     maxShow.max = String(Math.max(1, ALL.length));
     maxShow.value = String(ALL.length);
     maxShowLabel.textContent = String(maxShow.value);
 
-    updateStatus("✅ 読み込み完了。顔をクリックして所持/未所持を切り替えてください。");
+    updateStatus("✅ 自動読み込み完了。アイコンをクリックして所持/未所持を切り替えてください。");
     renderList();
   }
 
-  el("load").addEventListener("click", async () => {
-    try {
-      setStatus("読み込み中…");
-      await loadData();
-    } catch (e) {
-      setStatus(`❌ ${escapeHTML(e?.message || String(e))}`);
-    }
-  });
-
+  // ---- ボタン類 ----
   el("clearCache").addEventListener("click", () => {
     localStorage.removeItem(KEY_OWNED);
     localStorage.removeItem(KEY_LAST);
@@ -220,7 +207,7 @@
   });
 
   el("selectAll").addEventListener("click", () => {
-    if (!ALL.length) return updateStatus("⚠️ 先に「データ読み込み」をしてください。");
+    if (!ALL.length) return updateStatus("⚠️ まだ読み込み中です。少し待ってください。");
     ownedIds = new Set(ALL.map(c => c.id));
     saveJSON(KEY_OWNED, [...ownedIds]);
     updateStatus("✅ 全選択しました。");
@@ -236,7 +223,7 @@
 
   el("draw").addEventListener("click", () => {
     if (!ALL.length) {
-      result.innerHTML = "<div class='muted'>⚠️ 先に「データ読み込み」をしてください。</div>";
+      result.innerHTML = "<div class='muted'>⚠️ まだ読み込み中です。少し待ってください。</div>";
       return;
     }
 
@@ -275,6 +262,11 @@
   mode.addEventListener("change", () => { updateOwnedKVisibility(); });
   kleeBoost.addEventListener("change", () => { updateStatus(); });
 
+  // ---- 起動時：自動読み込み ----
   updateOwnedKVisibility();
-  updateStatus();
+  updateStatus("読み込み中…");
+  loadData().catch((e) => {
+    setStatus(`❌ ${escapeHTML(e?.message || String(e))}<div class="muted">ページを更新すると直ることがあります。</div>`);
+    list.innerHTML = "";
+  });
 })();
