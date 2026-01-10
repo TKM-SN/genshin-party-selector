@@ -1,13 +1,14 @@
 (() => {
   const BASE_ICON = "https://genshin.jmp.blue";
-  const DATA_URL  = "./characters_ja.json";
+  const DATA_URL = new URL("./characters_ja.json", location.href).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
 
   const el = (id) => document.getElementById(id);
+
   const status = el("status");
-  const list = el("list");
+  const list   = el("list");
   const result = el("result");
 
   const q = el("q");
@@ -18,8 +19,8 @@
   const ownedKWrap = el("ownedKWrap");
   const kleeBoost = el("kleeBoost");
 
-  // 91止まり対策：stepを必ず1にする（HTMLと二重で安全）
-  maxShow.step = "1";
+  // 91止まり対策
+  if (maxShow) maxShow.step = "1";
 
   let ALL = [];
   let ownedIds = new Set(loadJSON(KEY_OWNED, []));
@@ -33,8 +34,11 @@
     catch { return fallback; }
   }
   function saveJSON(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-  function setStatus(html) { status.innerHTML = html; }
-  function updateOwnedKVisibility(){ ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none"; }
+  function setStatus(html) { if (status) status.innerHTML = html; }
+  function updateOwnedKVisibility(){
+    if (!ownedKWrap || !mode) return;
+    ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
+  }
 
   function updateStatus(extra="") {
     if (!ALL.length) {
@@ -45,7 +49,7 @@
     const owned = ALL.filter(c => ownedIds.has(c.id)).length;
     const unowned = total - owned;
     setStatus(
-      `総キャラ: <b>${total}</b> / 所持（選択）: <b>${owned}</b> / 未所持: <b>${unowned}</b> / クレー優遇: <b>${kleeBoost.checked ? "ON" : "OFF"}</b>` +
+      `総キャラ: <b>${total}</b> / 所持（選択）: <b>${owned}</b> / 未所持: <b>${unowned}</b> / クレー優遇: <b>${kleeBoost && kleeBoost.checked ? "ON" : "OFF"}</b>` +
       (extra ? `<div class="muted">${extra}</div>` : "")
     );
   }
@@ -56,8 +60,6 @@
     }[m]));
   }
 
-  // 一覧はアイコンだけ（CSSで文字非表示）
-  // hoverで分かるように title に名前を入れる
   function cardHTML(c) {
     const owned = ownedIds.has(c.id);
     const cls = owned ? "owned" : "unowned";
@@ -69,19 +71,21 @@
              onerror="this.onerror=null;this.src='${fallbackIcon}';" />
         <div>
           <div><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
-          <div class="small muted">顔クリックで所持/未所持切替（暗い=未所持 / 明るい=所持）</div>
+          <div class="small muted">クリックで所持/未所持切替</div>
         </div>
       </div>
     `;
   }
 
   function renderList() {
+    if (!list) return;
+
     if (!ALL.length) {
       list.innerHTML = "<div class='muted'>読み込み中…</div>";
       return;
     }
-    const query = q.value.trim().toLowerCase();
-    const limit = Number(maxShow.value);
+    const query = (q?.value || "").trim().toLowerCase();
+    const limit = Number(maxShow?.value || ALL.length);
 
     const filtered = ALL.filter(c => {
       if (!query) return true;
@@ -92,7 +96,7 @@
 
     list.innerHTML = filtered.map(cardHTML).join("");
 
-    // タイル全体クリックで切替（押しやすい）
+    // タイル全体クリックで切替
     list.querySelectorAll(".card").forEach(card => {
       card.addEventListener("click", () => {
         const cid = card.dataset.id;
@@ -130,7 +134,7 @@
     if (k <= 0) return [];
     if (pool.length < k) throw new Error(`候補が ${pool.length} 人なので ${k} 人は抽選できません。`);
 
-    if (kleeBoost.checked) {
+    if (kleeBoost?.checked) {
       const klee = pool.find(isKlee);
       if (klee && k >= 1 && pool.length > 1) {
         const p = 0.65;
@@ -148,10 +152,10 @@
     const owned = ALL.filter(c => ownedIds.has(c.id));
     const unowned = ALL.filter(c => !ownedIds.has(c.id));
 
-    if (mode.value === "所持のみ") return sampleK(owned, 4);
-    if (mode.value === "未所持のみ") return sampleK(unowned, 4);
+    if (mode?.value === "所持のみ") return sampleK(owned, 4);
+    if (mode?.value === "未所持のみ") return sampleK(unowned, 4);
 
-    const k = Number(ownedK.value);
+    const k = Number(ownedK?.value || 0);
     const picks = [...sampleK(owned, k), ...sampleK(unowned, 4-k)];
 
     for (let i = picks.length - 1; i > 0; i--) {
@@ -162,6 +166,7 @@
   }
 
   function renderResult(picks) {
+    if (!result) return;
     result.innerHTML = `
       <h2>🎲 抽選結果（4人）</h2>
       ${picks.map(c => `
@@ -178,35 +183,40 @@
   }
 
   async function loadData() {
+    setStatus("読み込み中…（JSON取得中）");
     const r = await fetch(DATA_URL, { cache: "no-store" });
     if (!r.ok) throw new Error(`データ読み込み失敗: ${r.status}`);
+
+    setStatus("読み込み中…（JSON解析中）");
     const data = await r.json();
     if (!Array.isArray(data)) throw new Error("characters_ja.json の形式が想定外");
 
     ALL = data;
     ALL.sort((a,b) => String(a.sort||"").localeCompare(String(b.sort||""), "ja"));
 
-    maxShow.step = "1";
-    maxShow.max = String(Math.max(1, ALL.length));
-    maxShow.value = String(ALL.length);
-    maxShowLabel.textContent = String(maxShow.value);
+    if (maxShow) {
+      maxShow.step = "1";
+      maxShow.max = String(Math.max(1, ALL.length));
+      maxShow.value = String(ALL.length);
+    }
+    if (maxShowLabel) maxShowLabel.textContent = String(maxShow?.value || "");
 
     updateStatus("✅ 自動読み込み完了。アイコンをクリックして所持/未所持を切り替えてください。");
     renderList();
   }
 
-  // ---- ボタン類 ----
-  el("clearCache").addEventListener("click", () => {
+  // ---- ボタン ----
+  el("clearCache")?.addEventListener("click", () => {
     localStorage.removeItem(KEY_OWNED);
     localStorage.removeItem(KEY_LAST);
     ownedIds = new Set();
     lastDraw = null;
     updateStatus("🧹 選択・抽選履歴を削除しました。");
     renderList();
-    result.innerHTML = "";
+    if (result) result.innerHTML = "";
   });
 
-  el("selectAll").addEventListener("click", () => {
+  el("selectAll")?.addEventListener("click", () => {
     if (!ALL.length) return updateStatus("⚠️ まだ読み込み中です。少し待ってください。");
     ownedIds = new Set(ALL.map(c => c.id));
     saveJSON(KEY_OWNED, [...ownedIds]);
@@ -214,16 +224,16 @@
     renderList();
   });
 
-  el("reset").addEventListener("click", () => {
+  el("reset")?.addEventListener("click", () => {
     ownedIds = new Set();
     saveJSON(KEY_OWNED, []);
     updateStatus("✅ 選択を全解除しました。");
     renderList();
   });
 
-  el("draw").addEventListener("click", () => {
+  el("draw")?.addEventListener("click", () => {
     if (!ALL.length) {
-      result.innerHTML = "<div class='muted'>⚠️ まだ読み込み中です。少し待ってください。</div>";
+      if (result) result.innerHTML = "<div class='muted'>⚠️ まだ読み込み中です。少し待ってください。</div>";
       return;
     }
 
@@ -233,8 +243,8 @@
       let ids = picks.map(x => x.id).sort();
 
       let poolN = ALL.length;
-      if (mode.value === "所持のみ") poolN = ALL.filter(c => ownedIds.has(c.id)).length;
-      if (mode.value === "未所持のみ") poolN = ALL.filter(c => !ownedIds.has(c.id)).length;
+      if (mode?.value === "所持のみ") poolN = ALL.filter(c => ownedIds.has(c.id)).length;
+      if (mode?.value === "未所持のみ") poolN = ALL.filter(c => !ownedIds.has(c.id)).length;
 
       if (lastDraw && poolN > 4) {
         let tries = 0;
@@ -250,23 +260,23 @@
       renderResult(picks);
 
     } catch (e) {
-      result.innerHTML = `<div class='muted'>❌ エラー: ${escapeHTML(e?.message || String(e))}</div>`;
+      if (result) result.innerHTML = `<div class='muted'>❌ エラー: ${escapeHTML(e?.message || String(e))}</div>`;
     }
   });
 
-  q.addEventListener("input", renderList);
-  maxShow.addEventListener("input", () => {
-    maxShowLabel.textContent = String(maxShow.value);
+  q?.addEventListener("input", renderList);
+  maxShow?.addEventListener("input", () => {
+    if (maxShowLabel) maxShowLabel.textContent = String(maxShow.value);
     renderList();
   });
-  mode.addEventListener("change", () => { updateOwnedKVisibility(); });
-  kleeBoost.addEventListener("change", () => { updateStatus(); });
+  mode?.addEventListener("change", () => { updateOwnedKVisibility(); });
+  kleeBoost?.addEventListener("change", () => { updateStatus(); });
 
-  // ---- 起動時：自動読み込み ----
+  // ---- 起動 ----
   updateOwnedKVisibility();
   updateStatus("読み込み中…");
   loadData().catch((e) => {
     setStatus(`❌ ${escapeHTML(e?.message || String(e))}<div class="muted">ページを更新すると直ることがあります。</div>`);
-    list.innerHTML = "";
+    if (list) list.innerHTML = "";
   });
 })();
