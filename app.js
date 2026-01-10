@@ -18,13 +18,16 @@
   const ownedK = el("ownedK");
   const ownedKWrap = el("ownedKWrap");
   const kleeBoost = el("kleeBoost");
+  const rarityFilter = el("rarityFilter");
 
-  // 91止まり対策
   if (maxShow) maxShow.step = "1";
 
   let ALL = [];
   let ownedIds = new Set(loadJSON(KEY_OWNED, []));
   let lastDraw = loadJSON(KEY_LAST, null);
+
+  // rarity がデータに存在するか
+  let HAS_RARITY = false;
 
   const iconUrl = (cid) => `${BASE_ICON}/characters/${cid}/icon`;
   const fallbackIcon = iconUrl("traveler-anemo");
@@ -35,9 +38,38 @@
   }
   function saveJSON(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
   function setStatus(html) { if (status) status.innerHTML = html; }
+
+  function escapeHTML(s){
+    return String(s).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
+
   function updateOwnedKVisibility(){
     if (!ownedKWrap || !mode) return;
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
+  }
+
+  // ---- 旅人属性表示 ----
+  const TRAVELER_JP = {
+    anemo: "風", geo: "岩", electro: "雷", dendro: "草",
+    hydro: "水", pyro: "炎", cryo: "氷"
+  };
+  function travelerElemBadge(id){
+    if (!id) return null;
+    if (id.startsWith("traveler-")) {
+      const elem = id.split("-", 2)[1];
+      return TRAVELER_JP[elem] || null;
+    }
+    return null;
+  }
+
+  // ---- レア度取得（データ側にあれば使う）----
+  function getRarity(c){
+    // 生成JSONに rarity を足すとここが効く
+    const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
+    const n = Number(v);
+    return (n === 4 || n === 5) ? n : null;
   }
 
   function updateStatus(extra="") {
@@ -48,30 +80,40 @@
     const total = ALL.length;
     const owned = ALL.filter(c => ownedIds.has(c.id)).length;
     const unowned = total - owned;
+
+    const rarityNote = HAS_RARITY
+      ? ""
+      : "<div class='muted'>※ ★4/★5フィルタはデータに rarity が無いので「全部」固定です（JSON再生成で有効化できます）</div>";
+
     setStatus(
       `総キャラ: <b>${total}</b> / 所持（選択）: <b>${owned}</b> / 未所持: <b>${unowned}</b> / クレー優遇: <b>${kleeBoost && kleeBoost.checked ? "ON" : "OFF"}</b>` +
-      (extra ? `<div class="muted">${extra}</div>` : "")
+      (extra ? `<div class="muted">${extra}</div>` : "") +
+      rarityNote
     );
   }
 
-  function escapeHTML(s){
-    return String(s).replace(/[&<>"']/g, m => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[m]));
-  }
-
+  // ---- 一覧カードHTML（タイル）----
   function cardHTML(c) {
     const owned = ownedIds.has(c.id);
     const cls = owned ? "owned" : "unowned";
+
+    const tElem = travelerElemBadge(c.id);
+    const rarity = getRarity(c);
+
+    const leftBadge = tElem ? `<span class="corner-badge left">${escapeHTML(tElem)}</span>` : "";
+    const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
+
+    // title で誰か分かるように（表示はCSSで隠してる）
     return `
       <div class="card"
            data-id="${escapeHTML(c.id)}"
            title="${escapeHTML(c.name)} (${escapeHTML(c.id)})">
+        ${leftBadge}
+        ${rightBadge}
         <img class="face ${cls}" src="${iconUrl(c.id)}"
              onerror="this.onerror=null;this.src='${fallbackIcon}';" />
         <div>
-          <div><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
-          <div class="small muted">クリックで所持/未所持切替</div>
+          <div><b>${escapeHTML(c.name)}</b></div>
         </div>
       </div>
     `;
@@ -113,6 +155,7 @@
     });
   }
 
+  // ---- 抽選 ----
   function sysRandomInt(max){
     const a = new Uint32Array(1);
     crypto.getRandomValues(a);
@@ -148,9 +191,19 @@
     return pickDistinct(pool, k);
   }
 
+  function filterByRarity(chars){
+    if (!HAS_RARITY) return chars; // データにrarity無いなら全部扱い
+    const v = rarityFilter?.value || "all";
+    if (v === "all") return chars;
+    const want = Number(v);
+    return chars.filter(c => getRarity(c) === want);
+  }
+
   function drawOnce() {
-    const owned = ALL.filter(c => ownedIds.has(c.id));
-    const unowned = ALL.filter(c => !ownedIds.has(c.id));
+    const eligible = filterByRarity(ALL);
+
+    const owned = eligible.filter(c => ownedIds.has(c.id));
+    const unowned = eligible.filter(c => !ownedIds.has(c.id));
 
     if (mode?.value === "所持のみ") return sampleK(owned, 4);
     if (mode?.value === "未所持のみ") return sampleK(unowned, 4);
@@ -158,6 +211,7 @@
     const k = Number(ownedK?.value || 0);
     const picks = [...sampleK(owned, k), ...sampleK(unowned, 4-k)];
 
+    // シャッフル
     for (let i = picks.length - 1; i > 0; i--) {
       const j = sysRandomInt(i + 1);
       [picks[i], picks[j]] = [picks[j], picks[i]];
@@ -165,23 +219,36 @@
     return picks;
   }
 
+  // ---- 抽選結果表示：横並びグリッド ----
   function renderResult(picks) {
     if (!result) return;
+
     result.innerHTML = `
-      <h2>🎲 抽選結果（4人）</h2>
-      ${picks.map(c => `
-        <div class="card">
-          <img class="face owned" style="width:64px;height:64px;" src="${iconUrl(c.id)}"
-               onerror="this.onerror=null;this.src='${fallbackIcon}';" />
-          <div>
-            <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
-            <div class="small">EN: ${escapeHTML(c.en || "")}</div>
-          </div>
-        </div>
-      `).join("")}
+      <h2>🎲 抽選結果</h2>
+      <div id="resultCards">
+        ${picks.map(c => {
+          const tElem = travelerElemBadge(c.id);
+          const rarity = getRarity(c);
+          const leftBadge = tElem ? `<span class="corner-badge left">${escapeHTML(tElem)}</span>` : "";
+          const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
+          return `
+            <div class="card">
+              ${leftBadge}
+              ${rightBadge}
+              <img class="face owned" style="width:64px;height:64px;" src="${iconUrl(c.id)}"
+                   onerror="this.onerror=null;this.src='${fallbackIcon}';" />
+              <div>
+                <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
+                <div class="small">EN: ${escapeHTML(c.en || "")}</div>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
     `;
   }
 
+  // ---- データ読み込み ----
   async function loadData() {
     setStatus("読み込み中…（JSON取得中）");
     const r = await fetch(DATA_URL, { cache: "no-store" });
@@ -193,6 +260,19 @@
 
     ALL = data;
     ALL.sort((a,b) => String(a.sort||"").localeCompare(String(b.sort||""), "ja"));
+
+    // rarity の有無を判定
+    HAS_RARITY = ALL.some(c => getRarity(c) === 4 || getRarity(c) === 5);
+
+    // UI：rarityが無いなら選択不可にして「全部」固定
+    if (rarityFilter) {
+      if (!HAS_RARITY) {
+        rarityFilter.value = "all";
+        rarityFilter.disabled = true;
+      } else {
+        rarityFilter.disabled = false;
+      }
+    }
 
     if (maxShow) {
       maxShow.step = "1";
@@ -242,9 +322,9 @@
       let picks = drawOnce();
       let ids = picks.map(x => x.id).sort();
 
-      let poolN = ALL.length;
-      if (mode?.value === "所持のみ") poolN = ALL.filter(c => ownedIds.has(c.id)).length;
-      if (mode?.value === "未所持のみ") poolN = ALL.filter(c => !ownedIds.has(c.id)).length;
+      let poolN = filterByRarity(ALL).length;
+      if (mode?.value === "所持のみ") poolN = filterByRarity(ALL).filter(c => ownedIds.has(c.id)).length;
+      if (mode?.value === "未所持のみ") poolN = filterByRarity(ALL).filter(c => !ownedIds.has(c.id)).length;
 
       if (lastDraw && poolN > 4) {
         let tries = 0;
@@ -264,6 +344,7 @@
     }
   });
 
+  // ---- イベント ----
   q?.addEventListener("input", renderList);
   maxShow?.addEventListener("input", () => {
     if (maxShowLabel) maxShowLabel.textContent = String(maxShow.value);
@@ -271,6 +352,7 @@
   });
   mode?.addEventListener("change", () => { updateOwnedKVisibility(); });
   kleeBoost?.addEventListener("change", () => { updateStatus(); });
+  rarityFilter?.addEventListener("change", () => { updateStatus(); });
 
   // ---- 起動 ----
   updateOwnedKVisibility();
