@@ -18,6 +18,9 @@
   const ownedKWrap = el("ownedKWrap");
   const kleeBoost = el("kleeBoost");
 
+  // ★ 91止まり対策：stepを必ず1にする（HTMLと二重で安全）
+  maxShow.step = "1";
+
   let ALL = [];
   let ownedIds = new Set(loadJSON(KEY_OWNED, []));
   let lastDraw = loadJSON(KEY_LAST, null);
@@ -47,15 +50,25 @@
     );
   }
 
-  function escapeHTML(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function escapeHTML(s){
+    return String(s).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
 
+  // タイル: 表示はアイコンだけ（CSSで文字非表示）
+  // でも hover で分かるように title に名前を入れる
   function cardHTML(c) {
     const owned = ownedIds.has(c.id);
     const cls = owned ? "owned" : "unowned";
     const enLine = (c.en && c.en !== c.name) ? `<div class="small">EN: ${escapeHTML(c.en)}</div>` : "";
+
     return `
-      <div class="card" data-id="${escapeHTML(c.id)}">
-        <img class="face ${cls}" src="${iconUrl(c.id)}" onerror="this.onerror=null;this.src='${fallbackIcon}';" />
+      <div class="card"
+           data-id="${escapeHTML(c.id)}"
+           title="${escapeHTML(c.name)} (${escapeHTML(c.id)})">
+        <img class="face ${cls}" src="${iconUrl(c.id)}"
+             onerror="this.onerror=null;this.src='${fallbackIcon}';" />
         <div>
           <div><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
           ${enLine}
@@ -82,17 +95,18 @@
 
     list.innerHTML = filtered.map(cardHTML).join("");
 
-    list.querySelectorAll(".card .face").forEach(img => {
-      img.addEventListener("click", (ev) => {
-        const card = ev.target.closest(".card");
+    // ★ タイル全体クリックで切替（押しやすい）
+    list.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("click", () => {
         const cid = card.dataset.id;
         if (ownedIds.has(cid)) ownedIds.delete(cid);
         else ownedIds.add(cid);
 
         saveJSON(KEY_OWNED, [...ownedIds]);
 
-        ev.target.classList.toggle("owned", ownedIds.has(cid));
-        ev.target.classList.toggle("unowned", !ownedIds.has(cid));
+        const img = card.querySelector(".face");
+        img.classList.toggle("owned", ownedIds.has(cid));
+        img.classList.toggle("unowned", !ownedIds.has(cid));
         updateStatus();
       });
     });
@@ -176,8 +190,10 @@
     ALL = data;
     ALL.sort((a,b) => String(a.sort||"").localeCompare(String(b.sort||""), "ja"));
 
-    maxShow.max = Math.max(1, ALL.length);
-    maxShow.value = ALL.length;
+    // ★ 91止まり対策：ここでも step=1 を念押し
+    maxShow.step = "1";
+    maxShow.max = String(Math.max(1, ALL.length));
+    maxShow.value = String(ALL.length);
     maxShowLabel.textContent = String(maxShow.value);
 
     updateStatus("✅ 読み込み完了。顔をクリックして所持/未所持を切り替えてください。");
@@ -252,7 +268,10 @@
   });
 
   q.addEventListener("input", renderList);
-  maxShow.addEventListener("input", () => { maxShowLabel.textContent = String(maxShow.value); renderList(); });
+  maxShow.addEventListener("input", () => {
+    maxShowLabel.textContent = String(maxShow.value);
+    renderList();
+  });
   mode.addEventListener("change", () => { updateOwnedKVisibility(); });
   kleeBoost.addEventListener("change", () => { updateStatus(); });
 
