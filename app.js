@@ -1,6 +1,6 @@
 (() => {
   const BASE_ICON = "https://genshin.jmp.blue";
-  const DATA_URL  = "./data/characters_ja.json";
+  const DATA_URL  = "./characters_ja.json";
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
