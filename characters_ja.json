@@ -72,14 +72,6 @@
     "icon": "UI_AvatarIcon_Side_Ineffa"
   },
   {
-    "id": "ineffa-2",
-    "name": "イネファ",
-    "en": "Ineffa",
-    "sort": "いねふぁ",
-    "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Ineffa"
-  },
-  {
     "id": "ifa",
     "name": "イファ",
     "en": "Ifa",
@@ -120,18 +112,10 @@
     "icon": "UI_AvatarIcon_Side_Emilie"
   },
   {
-    "id": "pyro-archon-test",
-    "name": "炎神",
-    "en": "Pyro Archon (Test)",
-    "sort": "えんじん",
-    "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Qin"
-  },
-  {
     "id": "baizhu",
     "name": "白朮",
     "en": "Baizhu",
-    "sort": "おけら",
+    "sort": "びゃくじゅつ",
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_Baizhuer"
   },
@@ -147,7 +131,7 @@
     "id": "xiangling",
     "name": "香菱",
     "en": "Xiangling",
-    "sort": "かおりひし",
+    "sort": "しゃんりん",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Xiangling"
   },
@@ -155,7 +139,7 @@
     "id": "kachina",
     "name": "カチーナ",
     "en": "Kachina",
-    "sort": "かちな",
+    "sort": "かちーな",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Kachina"
   },
@@ -163,12 +147,13 @@
     "id": "shikanoin-heizou",
     "name": "鹿野院平蔵",
     "en": "Shikanoin Heizou",
-    "sort": "かのいんへいぞう",
+    "sort": "しかのいんへいぞう",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Heizo"
   },
   {
     "id": "kamisato-ayaka",
+    "jmp_id": "ayaka",
     "name": "神里綾華",
     "en": "Kamisato Ayaka",
     "sort": "かみさとあやか",
@@ -177,6 +162,7 @@
   },
   {
     "id": "kamisato-ayato",
+    "jmp_id": "ayato",
     "name": "神里綾人",
     "en": "Kamisato Ayato",
     "sort": "かみさとあやにん",
@@ -187,7 +173,7 @@
     "id": "ganyu",
     "name": "甘雨",
     "en": "Ganyu",
-    "sort": "かんあめ",
+    "sort": "かんう",
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_Ganyu"
   },
@@ -203,7 +189,7 @@
     "id": "kaveh",
     "name": "カーヴェ",
     "en": "Kaveh",
-    "sort": "かゔぇ",
+    "sort": "かーゔぇ",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Kaveh"
   },
@@ -235,15 +221,16 @@
     "id": "kuki-shinobu",
     "name": "久岐忍",
     "en": "Kuki Shinobu",
-    "sort": "きゅうしにん",
+    "sort": "くきしのぶ",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Shinobu"
   },
   {
     "id": "kujou-sara",
+    "jmp_id": "sara",
     "name": "九条裟羅",
     "en": "Kujou Sara",
-    "sort": "きゅうじょうさら",
+    "sort": "くじょうさら",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Sara"
   },
@@ -251,7 +238,7 @@
     "id": "kirara",
     "name": "綺良々",
     "en": "Kirara",
-    "sort": "きりょう々",
+    "sort": "きらら",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Momoka"
   },
@@ -259,7 +246,7 @@
     "id": "xingqiu",
     "name": "行秋",
     "en": "Xingqiu",
-    "sort": "ぎょうあき",
+    "sort": "ゆくあき",
     "rarity": 4,
     "icon": "UI_AvatarIcon_Side_Xingqiu"
   },
@@ -284,14 +271,6 @@
     "name": "胡桃",
     "en": "Hu Tao",
     "sort": "ふーたお",
-    "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Hutao"
-  },
-  {
-    "id": "hu-tao-trial",
-    "name": "胡桃（お試し）",
-    "en": "Hu Tao (Trial)",
-    "sort": "くるみ（おためし）",
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_Hutao"
   },
@@ -369,6 +348,7 @@
   },
   {
     "id": "sangonomiya-kokomi",
+    "jmp_id": "kokomi",
     "name": "珊瑚宮心海",
     "en": "Sangonomiya Kokomi",
     "sort": "さんごみやここみ",
@@ -852,14 +832,6 @@
     "icon": "UI_AvatarIcon_Side_Mavuika"
   },
   {
-    "id": "mavuika-trial",
-    "name": "マーヴィカ（お試し）",
-    "en": "Mavuika (Trial)",
-    "sort": "まーゔぃか（おためし）",
-    "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Mavuika"
-  },
-  {
     "id": "mika",
     "name": "ミカ",
     "en": "Mika",
@@ -885,6 +857,7 @@
   },
   {
     "id": "kaedehara-kazuha",
+    "jmp_id": "kazuha",
     "name": "楓原万葉",
     "en": "Kaedehara Kazuha",
     "sort": "かえではらかずは",
@@ -949,6 +922,7 @@
   },
   {
     "id": "raiden-shogun",
+    "jmp_id": "raiden",
     "name": "雷電将軍",
     "en": "Raiden Shogun",
     "sort": "らいでんしょうぐん",
