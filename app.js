@@ -1,6 +1,10 @@
 (() => {
-  const BASE_ICON = "https://genshin.jmp.blue";
-  const DATA_URL = new URL("./characters_ja.json", location.href).toString();
+  // genshin.jmp.blue はもうアイコンには使わない（id不一致で旅人に化ける原因）
+  // const BASE_ICON = "https://genshin.jmp.blue";
+  const ENKA_UI = "https://enka.network/ui";
+
+  // ★ GitHub Pages の末尾スラッシュ問題を回避
+  const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
@@ -29,8 +33,8 @@
   // rarity がデータに存在するか
   let HAS_RARITY = false;
 
-  const iconUrl = (cid) => `${BASE_ICON}/characters/${cid}/icon`;
-  const fallbackIcon = iconUrl("traveler-anemo");
+  // フォールバックはEnkaの旅人（side icon）
+  const fallbackIcon = `${ENKA_UI}/UI_AvatarIcon_Side_Traveler.png`;
 
   function loadJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; }
@@ -50,23 +54,58 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ---- 旅人属性表示 ----
-  const TRAVELER_JP = {
+  // -------------------------
+  // アイコンURL（ここが今回の本丸）
+  // - c.icon が "./assets/..." の場合 → ローカル
+  // - c.icon が "UI_..." の場合 → Enka
+  // - それ以外 → fallback
+  // -------------------------
+  function iconUrlByChar(c){
+    if (!c) return fallbackIcon;
+
+    const ic = c.icon;
+    if (typeof ic === "string" && ic.trim()) {
+      const s = ic.trim();
+
+      // ローカル相対パス（ドール等）
+      if (s.startsWith("./") || s.startsWith("assets/") || s.startsWith("/")) {
+        return new URL(s, document.baseURI).toString();
+      }
+
+      // Enka UI名（UI_...）
+      if (s.startsWith("UI_")) {
+        const name = s.replace(/\.(png|webp)$/i, "");
+        return `${ENKA_UI}/${name}.png`;
+      }
+    }
+
+    return fallbackIcon;
+  }
+
+  // -------------------------
+  // 旅人/ドール 属性表示（id か element から）
+  // -------------------------
+  const ELEM_JP = {
     anemo: "風", geo: "岩", electro: "雷", dendro: "草",
     hydro: "水", pyro: "炎", cryo: "氷"
   };
-  function travelerElemBadge(id){
-    if (!id) return null;
-    if (id.startsWith("traveler-")) {
-      const elem = id.split("-", 2)[1];
-      return TRAVELER_JP[elem] || null;
+
+  function elemBadgeFromChar(c){
+    const e = c?.element;
+    if (typeof e === "string" && ELEM_JP[e]) return ELEM_JP[e];
+
+    const id = String(c?.id || "");
+    // traveler-anemo / doll-geo 形式
+    if (id.startsWith("traveler-") || id.startsWith("doll-")) {
+      const parts = id.split("-");
+      const elem = parts[1];
+      return ELEM_JP[elem] || null;
     }
     return null;
   }
 
   // ---- レア度取得（データ側にあれば使う）----
   function getRarity(c){
-    // 生成JSONに rarity を足すとここが効く
     const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
     const n = Number(v);
     return (n === 4 || n === 5) ? n : null;
@@ -97,20 +136,19 @@
     const owned = ownedIds.has(c.id);
     const cls = owned ? "owned" : "unowned";
 
-    const tElem = travelerElemBadge(c.id);
+    const elem = elemBadgeFromChar(c);
     const rarity = getRarity(c);
 
-    const leftBadge = tElem ? `<span class="corner-badge left">${escapeHTML(tElem)}</span>` : "";
+    const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
     const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
-    // title で誰か分かるように（表示はCSSで隠してる）
     return `
       <div class="card"
            data-id="${escapeHTML(c.id)}"
            title="${escapeHTML(c.name)} (${escapeHTML(c.id)})">
         ${leftBadge}
         ${rightBadge}
-        <img class="face ${cls}" src="${iconUrl(c.id)}"
+        <img class="face ${cls}" src="${iconUrlByChar(c)}"
              onerror="this.onerror=null;this.src='${fallbackIcon}';" />
         <div>
           <div><b>${escapeHTML(c.name)}</b></div>
@@ -192,7 +230,7 @@
   }
 
   function filterByRarity(chars){
-    if (!HAS_RARITY) return chars; // データにrarity無いなら全部扱い
+    if (!HAS_RARITY) return chars;
     const v = rarityFilter?.value || "all";
     if (v === "all") return chars;
     const want = Number(v);
@@ -227,15 +265,15 @@
       <h2>🎲 抽選結果</h2>
       <div id="resultCards">
         ${picks.map(c => {
-          const tElem = travelerElemBadge(c.id);
+          const elem = elemBadgeFromChar(c);
           const rarity = getRarity(c);
-          const leftBadge = tElem ? `<span class="corner-badge left">${escapeHTML(tElem)}</span>` : "";
+          const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
           const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
           return `
             <div class="card">
               ${leftBadge}
               ${rightBadge}
-              <img class="face owned" style="width:64px;height:64px;" src="${iconUrl(c.id)}"
+              <img class="face owned" style="width:64px;height:64px;" src="${iconUrlByChar(c)}"
                    onerror="this.onerror=null;this.src='${fallbackIcon}';" />
               <div>
                 <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
@@ -261,10 +299,8 @@
     ALL = data;
     ALL.sort((a,b) => String(a.sort||"").localeCompare(String(b.sort||""), "ja"));
 
-    // rarity の有無を判定
     HAS_RARITY = ALL.some(c => getRarity(c) === 4 || getRarity(c) === 5);
 
-    // UI：rarityが無いなら選択不可にして「全部」固定
     if (rarityFilter) {
       if (!HAS_RARITY) {
         rarityFilter.value = "all";
