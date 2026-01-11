@@ -1,9 +1,5 @@
 (() => {
   const BASE_ICON = "https://genshin.jmp.blue";
-
-  // 読み込み確認用（DevTools Consoleで見える）
-  console.log("[app.js] jmp-only + jmp_id enabled v20260111-1");
-
   const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
@@ -32,8 +28,42 @@
 
   let HAS_RARITY = false;
 
-  // jmpのみ運用の最終フォールバック（画像取得に失敗したらこれに落とす）
+  // フォールバック（画像取得に失敗したら旅人へ）
   const fallbackIcon = `${BASE_ICON}/characters/traveler-anemo/icon`;
+
+  // ★★★★★ ここが追加：ローカル差し替え設定 ★★★★★
+  // ローカルアイコン置き場（例: /assets/icons/aino.webp みたいに置く）
+  const LOCAL_ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
+
+  // 「旅人アイコンに落ちてるやつ」一覧から、旅人そのもの(traveler-*)を除外した差し替え対象
+  // ※ここにあるIDのファイルを ./assets/icons/<id>.webp として置けば差し替わる
+  const LOCAL_ICON_IDS = new Set([
+    "aino",
+    "iansan",
+    "ineffa",
+    "ifa",
+    "varesa",
+    "escoffier",
+    "ororon",
+    "columbina",
+    "citlali",
+    "xilonen",
+    "skirk",
+    "dahlia",
+    "chasca",
+    "durin",
+    "nefer",
+    "flins",
+    "mavuika",
+    "jahoda",
+    "yumemizuki-mizuki",
+    "lauma",
+    "lan-yan"
+  ]);
+
+  // 拡張子を変えたいならここだけ変える（pngにしたいなら ".png"）
+  const LOCAL_ICON_EXT = ".webp";
+  // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 
   function loadJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; }
@@ -53,22 +83,35 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ★ jmp-only（EnkaやUI_は一切使わない）
-  // ★ ただし jmp_id があるならそれを優先（IDずれ救済）
+  // ★ ここが「アイコンURL決定」の肝 ★
+  // 優先順位：
+  // 1) データ側にローカル指定（./assets/...）があればそれを使う（dollなど）
+  // 2) traveler-* は正常動作として jmp を使う
+  // 3) LOCAL_ICON_IDS に入ってたら ./assets/icons/<id>.webp を使う
+  // 4) それ以外は jmp
+  // 5) 読み込み失敗したら onerror で fallbackIcon（旅人）
   function iconUrlByChar(c){
     if (!c) return fallbackIcon;
 
     const id = String(c.id || "");
-    const key = String(c.jmp_id || id);
 
-    // もしドールだけローカル固定に戻すならここを有効化
-    /*
-    if (id.startsWith("doll-")) {
-      return new URL("./assets/doll.webp", document.baseURI).toString();
+    // (1) データ側で ./assets/... のように明示指定されているものは尊重
+    if (typeof c.icon === "string" && (c.icon.startsWith("./") || c.icon.startsWith("assets/"))) {
+      return new URL(c.icon, document.baseURI).toString();
     }
-    */
 
-    return `${BASE_ICON}/characters/${encodeURIComponent(key)}/icon`;
+    // (2) traveler-* は jmp の旅人アイコン（これは正常動作として維持）
+    if (id.startsWith("traveler-")) {
+      return `${BASE_ICON}/characters/${encodeURIComponent(id)}/icon`;
+    }
+
+    // (3) 旅人フォールバックになってる新キャラなどはローカルに差し替え
+    if (LOCAL_ICON_IDS.has(id)) {
+      return `${LOCAL_ICON_DIR}${encodeURIComponent(id)}${LOCAL_ICON_EXT}`;
+    }
+
+    // (4) 通常は jmp
+    return `${BASE_ICON}/characters/${encodeURIComponent(id)}/icon`;
   }
 
   const ELEM_JP = {
