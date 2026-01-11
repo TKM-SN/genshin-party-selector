@@ -1,16 +1,7 @@
 (() => {
   // ===== 設定 =====
   const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
-
-  // jmp.blue（ネット側）
-  const BASE_ICON = "https://genshin.jmp.blue";
-
-  // ローカルアイコン置き場
-  const LOCAL_ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
-
-  // 旅人・ドールは「1枚固定」
-  const TRAVELER_LOCAL = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
-  const DOLL_LOCAL     = new URL("./assets/icons/doll.webp", document.baseURI).toString();
+  const ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
@@ -38,8 +29,8 @@
 
   let HAS_RARITY = false;
 
-  // 最終フォールバック（最悪これ）
-  const fallbackIcon = TRAVELER_LOCAL;
+  // ローカルアイコンの最終フォールバック（存在しない場合）
+  const fallbackIcon = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
 
   function loadJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; }
@@ -59,88 +50,52 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ===== 属性表示 =====
+  // ===== ローカルアイコン解決 =====
+  // - traveler-* は traveler.webp
+  // - doll-* は doll.webp
+  // - それ以外は <id>.webp
+  function iconUrlByChar(c){
+    const id = String(c?.id || "");
+    if (!id) return fallbackIcon;
+
+    if (id.startsWith("traveler-")) return new URL("traveler.webp", ICON_DIR).toString();
+    if (id.startsWith("doll-"))     return new URL("doll.webp", ICON_DIR).toString();
+
+    return new URL(`${id}.webp`, ICON_DIR).toString();
+  }
+
   const ELEM_JP = {
     anemo: "風", geo: "岩", electro: "雷", dendro: "草",
     hydro: "水", pyro: "炎", cryo: "氷"
   };
 
-  // ID から属性推測（旅人/ドール専用で“確定”させる）
-  function elementFromId(id){
-    const s = String(id || "");
-    const m = s.match(/^(traveler|doll)-([a-z]+)$/);
-    if (!m) return null;
-    const elem = String(m[2] || "").toLowerCase();
-    return ELEM_JP[elem] ? elem : null;
-  }
-
-  // ★ここが重要：旅人/ドールは「ID優先」で属性を確定（JSONの element が変でもズレない）
+  // ★ここ重要： traveler / doll は element を「idから必ず」決める（JSONが壊れてても正しく出る）
   function elemBadgeFromChar(c){
     const id = String(c?.id || "");
 
-    // ① traveler-* / doll-* は ID から必ず決める
     if (id.startsWith("traveler-") || id.startsWith("doll-")) {
-      const e = elementFromId(id);
-      if (e) return ELEM_JP[e];
+      const parts = id.split("-");
+      const elem = parts[1];
+      return ELEM_JP[elem] || null;
     }
 
-    // ② それ以外は JSON の element を使う
-    const e = typeof c?.element === "string" ? c.element.trim().toLowerCase() : "";
-    if (ELEM_JP[e]) return ELEM_JP[e];
+    // 通常キャラは element を入れてる場合だけ表示
+    const e = String(c?.element || "");
+    if (e && ELEM_JP[e]) return ELEM_JP[e];
 
     return null;
   }
 
+  // ★ここも重要： rarity が "5" でも 5 になるようにする
+  // traveler/doll は JSON に rarity が無くても 5 扱いにして★を出す
   function getRarity(c){
+    const id = String(c?.id || "");
+    if (id.startsWith("traveler-") || id.startsWith("doll-")) return 5;
+
     const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
     const n = Number(v);
     return (n === 4 || n === 5) ? n : null;
   }
-
-  // ===== アイコンURL生成 =====
-  // ローカル（まずこれを試す）
-  function localIconUrlByChar(c){
-    const id = String(c?.id || "");
-    if (!id) return fallbackIcon;
-
-    // 旅人は 1枚固定
-    if (id.startsWith("traveler-")) return TRAVELER_LOCAL;
-
-    // ドールも 1枚固定
-    if (id.startsWith("doll-")) return DOLL_LOCAL;
-
-    // その他キャラは id.webp
-    return `${LOCAL_ICON_DIR}${encodeURIComponent(id)}.webp`;
-  }
-
-  // リモート（ローカルが無い/壊れてる時の逃げ先）
-  function remoteIconUrlByChar(c){
-    const rid = String(c?.jmp_id || c?.id || "");
-    if (!rid) return `${BASE_ICON}/characters/traveler-anemo/icon`;
-    return `${BASE_ICON}/characters/${encodeURIComponent(rid)}/icon`;
-  }
-
-  // 画像フォールバック（local → remote → 最終fallback）
-  window.__genshin_icon_error = function(img){
-    try {
-      const stage = img.dataset.stage || "local";
-
-      if (stage === "local") {
-        img.dataset.stage = "remote";
-        img.src = img.dataset.remote || fallbackIcon;
-        return;
-      }
-      if (stage === "remote") {
-        img.dataset.stage = "fallback";
-        img.src = fallbackIcon;
-        return;
-      }
-      img.onerror = null;
-    } catch (e) {
-      img.onerror = null;
-      img.src = fallbackIcon;
-    }
-  };
 
   function updateStatus(extra="") {
     if (!ALL.length) {
@@ -167,9 +122,6 @@
     const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
     const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
-    const local = localIconUrlByChar(c);
-    const remote = remoteIconUrlByChar(c);
-
     return `
       <div class="card"
            data-id="${escapeHTML(c.id)}"
@@ -177,10 +129,8 @@
         ${leftBadge}
         ${rightBadge}
         <img class="face ${cls}"
-             src="${escapeHTML(local)}"
-             data-remote="${escapeHTML(remote)}"
-             data-stage="local"
-             onerror="window.__genshin_icon_error(this)" />
+             src="${iconUrlByChar(c)}"
+             onerror="this.onerror=null; this.src='${fallbackIcon}';" />
         <div><div><b>${escapeHTML(c.name)}</b></div></div>
       </div>
     `;
@@ -293,18 +243,13 @@
           const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
           const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
-          const local = localIconUrlByChar(c);
-          const remote = remoteIconUrlByChar(c);
-
           return `
             <div class="card">
               ${leftBadge}
               ${rightBadge}
               <img class="face owned" style="width:64px;height:64px;"
-                   src="${escapeHTML(local)}"
-                   data-remote="${escapeHTML(remote)}"
-                   data-stage="local"
-                   onerror="window.__genshin_icon_error(this)" />
+                   src="${iconUrlByChar(c)}"
+                   onerror="this.onerror=null; this.src='${fallbackIcon}';" />
               <div>
                 <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b></div>
                 <div class="small">EN: ${escapeHTML(c.en || "")}</div>
