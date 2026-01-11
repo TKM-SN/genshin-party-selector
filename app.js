@@ -1,10 +1,6 @@
 (() => {
-  // 正面を取りたい：まず genshin.jmp.blue を試す（成功するキャラは正面になる）
   const BASE_ICON = "https://genshin.jmp.blue";
-  // 失敗したら Enka の side icon に落とす（横顔でも確実に出る）
-  const ENKA_UI   = "https://enka.network/ui";
 
-  // GitHub Pages の末尾スラッシュ問題回避
   const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
@@ -31,11 +27,10 @@
   let ownedIds = new Set(loadJSON(KEY_OWNED, []));
   let lastDraw = loadJSON(KEY_LAST, null);
 
-  // rarity がデータに存在するか
   let HAS_RARITY = false;
 
-  // 最終フォールバック（何やってもダメな時だけ）
-  const fallbackIcon = `${ENKA_UI}/UI_AvatarIcon_Side_Traveler.png`;
+  // jmpのみ運用の最終フォールバック（画像取得に失敗したらこれに落とす）
+  const fallbackIcon = `${BASE_ICON}/characters/traveler-anemo/icon`;
 
   function loadJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; }
@@ -55,52 +50,27 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // -------------------------
-  // アイコンURL（ハイブリッド）
-  // 優先順位:
-  // 1) JSONの icon が "./assets/..." → ローカル（正面アイコン差し替え用）
-  // 2) JSONの icon が "UI_..." → Enka (side)
-  // 3) それ以外 → まず jmp.blue を試す（正面）
-  //
-  // ※ jmp.blue が404なら <img onerror> で Enka に自動で落とす
-  // -------------------------
-  function enkaUrlFromChar(c){
-    // JSONがUI_アイコンを持ってる場合はそれを使う
-    const ic = c?.icon;
-    if (typeof ic === "string" && ic.trim().startsWith("UI_")) {
-      const name = ic.trim().replace(/\.(png|webp)$/i, "");
-      return `${ENKA_UI}/${name}.png`;
-    }
-    // UI名が無い場合の保険（最終fallbackに近い）
-    return fallbackIcon;
-  }
-
+  // ★ ここが「jmpのみ」の肝 ★
+  // - ローカル差し替え（./assets/...）は無視
+  // - Enka UI名（UI_...）も無視
+  // - 常に jmp.blue を見に行く
+  // - 失敗したら onerror で fallbackIcon（旅人）へ
   function iconUrlByChar(c){
     if (!c) return fallbackIcon;
 
-    const ic = c.icon;
-    if (typeof ic === "string" && ic.trim()) {
-      const s = ic.trim();
+    const id = String(c.id || "");
 
-      // ローカル相対パス（ドールや、差し替え正面アイコン）
-      if (s.startsWith("./") || s.startsWith("assets/") || s.startsWith("/")) {
-        return new URL(s, document.baseURI).toString();
-      }
-
-      // Enka UI名（横顔）
-      if (s.startsWith("UI_")) {
-        const name = s.replace(/\.(png|webp)$/i, "");
-        return `${ENKA_UI}/${name}.png`;
-      }
+    // 厳密に「jmpのみ」にするため doll も jmp を見に行く（存在しないので結果は旅人に落ちる）
+    // もしドールだけローカル固定に戻すなら、下の if ブロックを有効化してね。
+    /*
+    if (id.startsWith("doll-")) {
+      return new URL("./assets/doll.webp", document.baseURI).toString();
     }
+    */
 
-    // それ以外は「正面」を狙って jmp.blue を試す
-    return `${BASE_ICON}/characters/${encodeURIComponent(c.id)}/icon`;
+    return `${BASE_ICON}/characters/${encodeURIComponent(id)}/icon`;
   }
 
-  // -------------------------
-  // 旅人/ドール 属性表示（id か element から）
-  // -------------------------
   const ELEM_JP = {
     anemo: "風", geo: "岩", electro: "雷", dendro: "草",
     hydro: "水", pyro: "炎", cryo: "氷"
@@ -119,7 +89,6 @@
     return null;
   }
 
-  // ---- レア度取得 ----
   function getRarity(c){
     const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
     const n = Number(v);
@@ -135,18 +104,12 @@
     const owned = ALL.filter(c => ownedIds.has(c.id)).length;
     const unowned = total - owned;
 
-    const rarityNote = HAS_RARITY
-      ? ""
-      : "<div class='muted'>※ ★4/★5フィルタはデータに rarity が無いので「全部」固定です（JSON再生成で有効化できます）</div>";
-
     setStatus(
       `総キャラ: <b>${total}</b> / 所持（選択）: <b>${owned}</b> / 未所持: <b>${unowned}</b> / クレー優遇: <b>${kleeBoost && kleeBoost.checked ? "ON" : "OFF"}</b>` +
-      (extra ? `<div class="muted">${extra}</div>` : "") +
-      rarityNote
+      (extra ? `<div class="muted">${extra}</div>` : "")
     );
   }
 
-  // ---- 一覧カードHTML（タイル）----
   function cardHTML(c) {
     const owned = ownedIds.has(c.id);
     const cls = owned ? "owned" : "unowned";
@@ -157,9 +120,6 @@
     const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
     const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
-    // ★ここが肝：data-enka に「失敗時の代替URL」を入れておく
-    const enkaFallback = enkaUrlFromChar(c);
-
     return `
       <div class="card"
            data-id="${escapeHTML(c.id)}"
@@ -168,11 +128,8 @@
         ${rightBadge}
         <img class="face ${cls}"
              src="${iconUrlByChar(c)}"
-             data-enka="${escapeHTML(enkaFallback)}"
-             onerror="this.onerror=null; this.src=this.dataset.enka || '${fallbackIcon}';" />
-        <div>
-          <div><b>${escapeHTML(c.name)}</b></div>
-        </div>
+             onerror="this.onerror=null; this.src='${fallbackIcon}';" />
+        <div><div><b>${escapeHTML(c.name)}</b></div></div>
       </div>
     `;
   }
@@ -196,13 +153,11 @@
 
     list.innerHTML = filtered.map(cardHTML).join("");
 
-    // タイル全体クリックで切替
     list.querySelectorAll(".card").forEach(card => {
       card.addEventListener("click", () => {
         const cid = card.dataset.id;
         if (ownedIds.has(cid)) ownedIds.delete(cid);
         else ownedIds.add(cid);
-
         saveJSON(KEY_OWNED, [...ownedIds]);
 
         const img = card.querySelector(".face");
@@ -213,7 +168,6 @@
     });
   }
 
-  // ---- 抽選 ----
   function sysRandomInt(max){
     const a = new Uint32Array(1);
     crypto.getRandomValues(a);
@@ -259,7 +213,6 @@
 
   function drawOnce() {
     const eligible = filterByRarity(ALL);
-
     const owned = eligible.filter(c => ownedIds.has(c.id));
     const unowned = eligible.filter(c => !ownedIds.has(c.id));
 
@@ -276,7 +229,6 @@
     return picks;
   }
 
-  // ---- 抽選結果表示（横並び）----
   function renderResult(picks) {
     if (!result) return;
 
@@ -288,7 +240,6 @@
           const rarity = getRarity(c);
           const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
           const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
-          const enkaFallback = enkaUrlFromChar(c);
 
           return `
             <div class="card">
@@ -296,10 +247,9 @@
               ${rightBadge}
               <img class="face owned" style="width:64px;height:64px;"
                    src="${iconUrlByChar(c)}"
-                   data-enka="${escapeHTML(enkaFallback)}"
-                   onerror="this.onerror=null; this.src=this.dataset.enka || '${fallbackIcon}';" />
+                   onerror="this.onerror=null; this.src='${fallbackIcon}';" />
               <div>
-                <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
+                <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b></div>
                 <div class="small">EN: ${escapeHTML(c.en || "")}</div>
               </div>
             </div>
@@ -309,7 +259,6 @@
     `;
   }
 
-  // ---- データ読み込み ----
   async function loadData() {
     setStatus("読み込み中…（JSON取得中）");
     const r = await fetch(DATA_URL, { cache: "no-store" });
@@ -323,7 +272,6 @@
     ALL.sort((a,b) => String(a.sort||"").localeCompare(String(b.sort||""), "ja"));
 
     HAS_RARITY = ALL.some(c => getRarity(c) === 4 || getRarity(c) === 5);
-
     if (rarityFilter) {
       rarityFilter.disabled = !HAS_RARITY;
       if (!HAS_RARITY) rarityFilter.value = "all";
@@ -340,7 +288,6 @@
     renderList();
   }
 
-  // ---- ボタン ----
   el("clearCache")?.addEventListener("click", () => {
     localStorage.removeItem(KEY_OWNED);
     localStorage.removeItem(KEY_LAST);
@@ -371,35 +318,16 @@
       if (result) result.innerHTML = "<div class='muted'>⚠️ まだ読み込み中です。少し待ってください。</div>";
       return;
     }
-
-    const maxRetry = 50;
     try {
-      let picks = drawOnce();
-      let ids = picks.map(x => x.id).sort();
-
-      let poolN = filterByRarity(ALL).length;
-      if (mode?.value === "所持のみ") poolN = filterByRarity(ALL).filter(c => ownedIds.has(c.id)).length;
-      if (mode?.value === "未所持のみ") poolN = filterByRarity(ALL).filter(c => !ownedIds.has(c.id)).length;
-
-      if (lastDraw && poolN > 4) {
-        let tries = 0;
-        while (tries < maxRetry && JSON.stringify(ids) === JSON.stringify(lastDraw)) {
-          picks = drawOnce();
-          ids = picks.map(x => x.id).sort();
-          tries++;
-        }
-      }
-
-      lastDraw = ids;
+      const picks = drawOnce();
+      lastDraw = picks.map(x => x.id).sort();
       saveJSON(KEY_LAST, lastDraw);
       renderResult(picks);
-
     } catch (e) {
       if (result) result.innerHTML = `<div class='muted'>❌ エラー: ${escapeHTML(e?.message || String(e))}</div>`;
     }
   });
 
-  // ---- イベント ----
   q?.addEventListener("input", renderList);
   maxShow?.addEventListener("input", () => {
     if (maxShowLabel) maxShowLabel.textContent = String(maxShow.value);
@@ -409,7 +337,6 @@
   kleeBoost?.addEventListener("change", () => { updateStatus(); });
   rarityFilter?.addEventListener("change", () => { updateStatus(); });
 
-  // ---- 起動 ----
   updateOwnedKVisibility();
   updateStatus("読み込み中…");
   loadData().catch((e) => {
