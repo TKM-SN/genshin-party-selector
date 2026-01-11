@@ -24,6 +24,10 @@
       border:1px solid rgba(0,0,0,0.08);
       margin:6px 0;
       background:#fff;
+
+      /* ★ バッジの基準＆切れ防止（念のため） */
+      position: relative;
+      overflow: visible;
     }
 
     .face{
@@ -31,6 +35,10 @@
       user-select:none; cursor:pointer;
       transition: filter .15s ease, transform .05s ease;
       display:block;
+
+      /* 画像がバッジを覆わないように */
+      position: relative;
+      z-index: 1;
     }
     .face:active{ transform: scale(.98); }
 
@@ -72,12 +80,18 @@
 
       text-align: center;
       cursor: pointer;
-      position: relative; /* バッジ用 */
+
+      /* バッジ用（明示） */
+      position: relative;
+      overflow: visible;
     }
     #list .face{
       width: 72px !important;
       height: 72px !important;
       border-radius: 14px !important;
+
+      position: relative;
+      z-index: 1;
     }
     /* 一覧は文字を隠す（検索はJS側なのでOK） */
     #list .card > div{
@@ -95,6 +109,9 @@
       border:1px solid rgba(0,0,0,.18);
       background: rgba(255,255,255,.92);
       pointer-events:none;
+
+      /* これが本命：最前面固定 */
+      z-index: 50;
     }
     .corner-badge.left{
       left:6px;
@@ -113,7 +130,8 @@
     /* 抽選結果のカードは横レイアウトのまま */
     #resultCards .card{
       margin: 0;
-      position: relative; /* バッジ用 */
+      position: relative;
+      overflow: visible;
     }
   </style>
 </head>
