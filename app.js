@@ -1,6 +1,9 @@
 (() => {
   const BASE_ICON = "https://genshin.jmp.blue";
 
+  // 読み込み確認用（DevTools Consoleで見える）
+  console.log("[app.js] jmp-only + jmp_id enabled v20260111-1");
+
   const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
@@ -50,25 +53,22 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ★ ここが「jmpのみ」の肝 ★
-  // - ローカル差し替え（./assets/...）は無視
-  // - Enka UI名（UI_...）も無視
-  // - 常に jmp.blue を見に行く
-  // - 失敗したら onerror で fallbackIcon（旅人）へ
+  // ★ jmp-only（EnkaやUI_は一切使わない）
+  // ★ ただし jmp_id があるならそれを優先（IDずれ救済）
   function iconUrlByChar(c){
     if (!c) return fallbackIcon;
 
     const id = String(c.id || "");
+    const key = String(c.jmp_id || id);
 
-    // 厳密に「jmpのみ」にするため doll も jmp を見に行く（存在しないので結果は旅人に落ちる）
-    // もしドールだけローカル固定に戻すなら、下の if ブロックを有効化してね。
+    // もしドールだけローカル固定に戻すならここを有効化
     /*
     if (id.startsWith("doll-")) {
       return new URL("./assets/doll.webp", document.baseURI).toString();
     }
     */
 
-    return `${BASE_ICON}/characters/${encodeURIComponent(id)}/icon`;
+    return `${BASE_ICON}/characters/${encodeURIComponent(key)}/icon`;
   }
 
   const ELEM_JP = {
