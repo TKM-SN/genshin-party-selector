@@ -1,7 +1,10 @@
 (() => {
-  // ===== 設定 =====
-  const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
-  const ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
+  // ===== 基本設定 =====
+  const BASE_ICON = "https://genshin.jmp.blue";
+  const DATA_URL  = new URL("characters_ja.json", document.baseURI).toString();
+
+  // ローカルアイコン置き場（あなたの構成）
+  const ICON_DIR  = new URL("./assets/icons/", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
@@ -29,7 +32,7 @@
 
   let HAS_RARITY = false;
 
-  // ローカルアイコンの最終フォールバック（存在しない場合）
+  // 最終フォールバック（何も無い時だけ旅人）
   const fallbackIcon = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
 
   function loadJSON(key, fallback) {
@@ -50,44 +53,30 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ===== ローカルアイコン解決 =====
-  // - traveler-* は traveler.webp
-  // - doll-* は doll.webp
-  // - それ以外は <id>.webp
-  function iconUrlByChar(c){
-    const id = String(c?.id || "");
-    if (!id) return fallbackIcon;
-
-    if (id.startsWith("traveler-")) return new URL("traveler.webp", ICON_DIR).toString();
-    if (id.startsWith("doll-"))     return new URL("doll.webp", ICON_DIR).toString();
-
-    return new URL(`${id}.webp`, ICON_DIR).toString();
-  }
-
+  // ===== 属性表示（旅人・ドールは id から確実に出す） =====
   const ELEM_JP = {
     anemo: "風", geo: "岩", electro: "雷", dendro: "草",
     hydro: "水", pyro: "炎", cryo: "氷"
   };
 
-  // ★ここ重要： traveler / doll は element を「idから必ず」決める（JSONが壊れてても正しく出る）
   function elemBadgeFromChar(c){
     const id = String(c?.id || "");
 
+    // traveler-xxx / doll-xxx は id から属性確定
     if (id.startsWith("traveler-") || id.startsWith("doll-")) {
       const parts = id.split("-");
       const elem = parts[1];
       return ELEM_JP[elem] || null;
     }
 
-    // 通常キャラは element を入れてる場合だけ表示
+    // 通常キャラは element が入ってる場合だけ（入ってなければ出さない）
     const e = String(c?.element || "");
     if (e && ELEM_JP[e]) return ELEM_JP[e];
 
     return null;
   }
 
-  // ★ここも重要： rarity が "5" でも 5 になるようにする
-  // traveler/doll は JSON に rarity が無くても 5 扱いにして★を出す
+  // ===== レア度（旅人・ドールは★5固定） =====
   function getRarity(c){
     const id = String(c?.id || "");
     if (id.startsWith("traveler-") || id.startsWith("doll-")) return 5;
@@ -95,6 +84,46 @@
     const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
     const n = Number(v);
     return (n === 4 || n === 5) ? n : null;
+  }
+
+  // ===== URL生成 =====
+  function remoteIconUrl(id){
+    return `${BASE_ICON}/characters/${encodeURIComponent(id)}/icon`;
+  }
+  function localIconUrl(file){
+    return new URL(file, ICON_DIR).toString();
+  }
+
+  // 「旅人は traveler.webp 1枚」「ドールは doll.webp 1枚」
+  function getLocalFileForId(id){
+    if (id.startsWith("traveler-")) return "traveler.webp";
+    if (id.startsWith("doll-"))     return "doll.webp";
+    return `${id}.webp`;
+  }
+
+  // 重要：ローカル→失敗したらremote→それも失敗したらfallback
+  // なので「ローカルに無いキャラが全部旅人」にはならない
+  function buildImgTag(c, cls){
+    const id = String(c.id || "");
+    const local = localIconUrl(getLocalFileForId(id));
+    const remote = remoteIconUrl(id);
+
+    // onerror 1回目: remoteへ
+    // onerror 2回目: fallbackへ
+    return `
+      <img class="face ${cls}"
+           src="${local}"
+           data-remote="${remote}"
+           onerror="
+             if(!this.dataset._step){
+               this.dataset._step='remote';
+               this.src=this.dataset.remote;
+             } else {
+               this.onerror=null;
+               this.src='${fallbackIcon}';
+             }
+           " />
+    `;
   }
 
   function updateStatus(extra="") {
@@ -119,7 +148,7 @@
     const elem = elemBadgeFromChar(c);
     const rarity = getRarity(c);
 
-    const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
+    const leftBadge  = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
     const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
     return `
@@ -128,9 +157,7 @@
            title="${escapeHTML(c.name)} (${escapeHTML(c.id)})">
         ${leftBadge}
         ${rightBadge}
-        <img class="face ${cls}"
-             src="${iconUrlByChar(c)}"
-             onerror="this.onerror=null; this.src='${fallbackIcon}';" />
+        ${buildImgTag(c, cls)}
         <div><div><b>${escapeHTML(c.name)}</b></div></div>
       </div>
     `;
@@ -143,6 +170,7 @@
       list.innerHTML = "<div class='muted'>読み込み中…</div>";
       return;
     }
+
     const query = (q?.value || "").trim().toLowerCase();
     const limit = Number(maxShow?.value || ALL.length);
 
@@ -240,7 +268,7 @@
         ${picks.map(c => {
           const elem = elemBadgeFromChar(c);
           const rarity = getRarity(c);
-          const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
+          const leftBadge  = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
           const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
           return `
@@ -248,8 +276,17 @@
               ${leftBadge}
               ${rightBadge}
               <img class="face owned" style="width:64px;height:64px;"
-                   src="${iconUrlByChar(c)}"
-                   onerror="this.onerror=null; this.src='${fallbackIcon}';" />
+                   src="${localIconUrl(getLocalFileForId(String(c.id||"")))}"
+                   data-remote="${remoteIconUrl(String(c.id||""))}"
+                   onerror="
+                     if(!this.dataset._step){
+                       this.dataset._step='remote';
+                       this.src=this.dataset.remote;
+                     } else {
+                       this.onerror=null;
+                       this.src='${fallbackIcon}';
+                     }
+                   " />
               <div>
                 <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b></div>
                 <div class="small">EN: ${escapeHTML(c.en || "")}</div>
