@@ -1,7 +1,12 @@
 (() => {
-  const BASE_ICON = "https://genshin.jmp.blue";
-
+  // ===== 設定 =====
   const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
+
+  // ローカルアイコン置き場（あなたが作ったフォルダ）
+  const LOCAL_ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
+  // 旅人・ドールは「1枚固定」
+  const TRAVELER_LOCAL = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
+  const DOLL_LOCAL     = new URL("./assets/icons/doll.webp", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
@@ -29,41 +34,9 @@
 
   let HAS_RARITY = false;
 
-  // jmpのみ運用の最終フォールバック（画像取得に失敗したらこれに落とす）
-  const fallbackIcon = `${BASE_ICON}/characters/traveler-anemo/icon`;
-
-  // ★ ローカル差し替え（旅人に落ちてた28体だけ）★
-  const LOCAL_ICON_DIR = "./assets/icons";
-  const LOCAL_IDS = new Set([
-    "aino",
-    "iansan",
-    "ineffa",
-    "ifa",
-    "varesa",
-    "escoffier",
-    "ororon",
-    "columbina",
-    "citlali",
-    "xilonen",
-    "skirk",
-    "dahlia",
-    "chasca",
-    "durin",
-    "doll-geo",
-    "doll-anemo",
-    "doll-electro",
-    "doll-dendro",
-    "doll-cryo",
-    "doll-pyro",
-    "doll-hydro",
-    "nefer",
-    "flins",
-    "mavuika",
-    "jahoda",
-    "yumemizuki-mizuki",
-    "lauma",
-    "lan-yan",
-  ]);
+  // 最終フォールバック（読み込み失敗時にここへ）
+  // 旅人のローカル画像に固定
+  const fallbackIcon = TRAVELER_LOCAL;
 
   function loadJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; }
@@ -83,28 +56,21 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ★ ここがアイコンURLの肝 ★
-  // - traveler-xxx はそのまま jmp
-  // - LOCAL_IDS に入ってる28体は ./assets/icons/{id}.webp を使う
-  // - それ以外は jmp.blue を見に行く
+  // ★ ローカルアイコン運用 ★
+  // - traveler-* → ./assets/icons/traveler.webp
+  // - doll-*     → ./assets/icons/doll.webp
+  // - それ以外   → ./assets/icons/{id}.webp
   // - 失敗したら onerror で fallbackIcon（旅人）へ
   function iconUrlByChar(c){
-    if (!c) return fallbackIcon;
+    const id = String(c?.id || "");
 
-    const id = String(c.id || "");
+    if (id.startsWith("traveler-")) return TRAVELER_LOCAL;
+    if (id.startsWith("doll-"))     return DOLL_LOCAL;
 
-    // 旅人は正常動作（各属性がある）なのでローカルにしない
-    if (id.startsWith("traveler-")) {
-      return `${BASE_ICON}/characters/${encodeURIComponent(id)}/icon`;
-    }
+    // 通常キャラは id.webp
+    if (id) return `${LOCAL_ICON_DIR}${encodeURIComponent(id)}.webp`;
 
-    // 旅人に落ちてたやつだけローカルへ差し替え
-    if (LOCAL_IDS.has(id)) {
-      return new URL(`${LOCAL_ICON_DIR}/${encodeURIComponent(id)}.webp`, document.baseURI).toString();
-    }
-
-    // 通常は jmp
-    return `${BASE_ICON}/characters/${encodeURIComponent(id)}/icon`;
+    return fallbackIcon;
   }
 
   const ELEM_JP = {
