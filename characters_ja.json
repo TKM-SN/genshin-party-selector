@@ -1095,5 +1095,21 @@
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_Xiao",
     "jmp_id": "xiao"
-  }
+  },
+  {
+  "id": "zibai",
+  "name": "茲白",
+  "en": "Zibai",
+  "sort": "しはく",
+  "rarity": 5,
+  "icon": "UI_AvatarIcon_Side_Zibai"
+},
+{
+  "id": "illuga",
+  "name": "イルーガ",
+  "en": "Illuga",
+  "sort": "いるーが",
+  "rarity": 4,
+  "icon": "UI_AvatarIcon_Side_Illuga"
+}
 ]
