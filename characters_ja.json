@@ -1,653 +1,1038 @@
 [
   {
+    "id": "lan-yan",
+    "name": "藍硯",
+    "en": "Lan Yan",
+    "sort": "らんやん",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Lanyan"
+  },
+  {
+    "id": "aino",
+    "name": "アイノ",
+    "en": "Aino",
+    "sort": "あいの",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Aino"
+  },
+  {
     "id": "alhaitham",
     "name": "アルハイゼン",
     "en": "Alhaitham",
     "sort": "あるはいぜん",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Alhatham"
   },
   {
     "id": "albedo",
     "name": "アルベド",
     "en": "Albedo",
     "sort": "あるべど",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Albedo"
   },
   {
     "id": "arlecchino",
     "name": "アルレッキーノ",
     "en": "Arlecchino",
     "sort": "あるれっきの",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Arlecchino"
   },
   {
     "id": "aloy",
     "name": "アーロイ",
     "en": "Aloy",
     "sort": "あろい",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Aloy"
   },
   {
     "id": "amber",
     "name": "アンバー",
     "en": "Amber",
     "sort": "あんば",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Ambor"
+  },
+  {
+    "id": "iansan",
+    "name": "イアンサ",
+    "en": "Iansan",
+    "sort": "いあんさ",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Iansan"
+  },
+  {
+    "id": "ineffa",
+    "name": "イネファ",
+    "en": "Ineffa",
+    "sort": "いねふぁ",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Ineffa"
+  },
+  {
+    "id": "ineffa-2",
+    "name": "イネファ",
+    "en": "Ineffa",
+    "sort": "いねふぁ",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Ineffa"
+  },
+  {
+    "id": "ifa",
+    "name": "イファ",
+    "en": "Ifa",
+    "sort": "いふぁ",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Ifa"
   },
   {
     "id": "venti",
     "name": "ウェンティ",
     "en": "Venti",
     "sort": "うぇんてぃ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Venti"
   },
   {
     "id": "eula",
     "name": "エウルア",
     "en": "Eula",
     "sort": "えうるあ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Eula"
+  },
+  {
+    "id": "escoffier",
+    "name": "エスコフィエ",
+    "en": "Escoffier",
+    "sort": "えすこふぃえ",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Escoffier"
   },
   {
     "id": "emilie",
     "name": "エミリエ",
     "en": "Emilie",
     "sort": "えみりえ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Emilie"
+  },
+  {
+    "id": "pyro-archon-test",
+    "name": "炎神",
+    "en": "Pyro Archon (Test)",
+    "sort": "えんじん",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Qin"
   },
   {
     "id": "baizhu",
     "name": "白朮",
     "en": "Baizhu",
     "sort": "おけら",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Baizhuer"
+  },
+  {
+    "id": "ororon",
+    "name": "オロルン",
+    "en": "Ororon",
+    "sort": "おろるん",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Olorun"
   },
   {
     "id": "xiangling",
     "name": "香菱",
     "en": "Xiangling",
     "sort": "かおりひし",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Xiangling"
   },
   {
     "id": "kachina",
     "name": "カチーナ",
     "en": "Kachina",
     "sort": "かちな",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Kachina"
   },
   {
     "id": "shikanoin-heizou",
     "name": "鹿野院平蔵",
     "en": "Shikanoin Heizou",
     "sort": "かのいんへいぞう",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Heizo"
   },
   {
-    "id": "ayaka",
+    "id": "kamisato-ayaka",
     "name": "神里綾華",
     "en": "Kamisato Ayaka",
     "sort": "かみさとあやか",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Ayaka"
   },
   {
-    "id": "ayato",
+    "id": "kamisato-ayato",
     "name": "神里綾人",
     "en": "Kamisato Ayato",
     "sort": "かみさとあやにん",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Ayato"
   },
   {
     "id": "ganyu",
     "name": "甘雨",
     "en": "Ganyu",
     "sort": "かんあめ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Ganyu"
   },
   {
     "id": "xianyun",
     "name": "閑雲",
     "en": "Xianyun",
     "sort": "かんうん",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Liuyun"
   },
   {
     "id": "kaveh",
     "name": "カーヴェ",
     "en": "Kaveh",
     "sort": "かゔぇ",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Kaveh"
   },
   {
     "id": "kaeya",
     "name": "ガイア",
     "en": "Kaeya",
     "sort": "がいあ",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Kaeya"
   },
   {
     "id": "kinich",
     "name": "キィニチ",
     "en": "Kinich",
     "sort": "きぃにち",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Kinich"
   },
   {
     "id": "candace",
     "name": "キャンディス",
     "en": "Candace",
     "sort": "きゃんでぃす",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Candace"
   },
   {
     "id": "kuki-shinobu",
     "name": "久岐忍",
     "en": "Kuki Shinobu",
     "sort": "きゅうしにん",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Shinobu"
   },
   {
-    "id": "sara",
+    "id": "kujou-sara",
     "name": "九条裟羅",
     "en": "Kujou Sara",
     "sort": "きゅうじょうさら",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Sara"
   },
   {
     "id": "kirara",
     "name": "綺良々",
     "en": "Kirara",
     "sort": "きりょう々",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Momoka"
   },
   {
     "id": "xingqiu",
     "name": "行秋",
     "en": "Xingqiu",
     "sort": "ぎょうあき",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Xingqiu"
   },
   {
     "id": "ningguang",
     "name": "凝光",
     "en": "Ningguang",
-    "sort": "ぎょうひかり",
-    "rarity": 4
+    "sort": "ぎょうこう",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Ningguang"
   },
   {
     "id": "yun-jin",
     "name": "雲菫",
     "en": "Yun Jin",
-    "sort": "くもすみれ",
-    "rarity": 4
+    "sort": "うんきん",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Yunjin"
   },
   {
     "id": "hu-tao",
     "name": "胡桃",
     "en": "Hu Tao",
-    "sort": "くるみ",
-    "rarity": 5
+    "sort": "ふーたお",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Hutao"
+  },
+  {
+    "id": "hu-tao-trial",
+    "name": "胡桃（お試し）",
+    "en": "Hu Tao (Trial)",
+    "sort": "くるみ（おためし）",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Hutao"
   },
   {
     "id": "klee",
     "name": "クレー",
     "en": "Klee",
     "sort": "くれ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Klee"
   },
   {
     "id": "clorinde",
     "name": "クロリンデ",
     "en": "Clorinde",
     "sort": "くろりんで",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Clorinde"
   },
   {
     "id": "yanfei",
     "name": "煙緋",
     "en": "Yanfei",
-    "sort": "けむりひ",
-    "rarity": 4
+    "sort": "えんひ",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Feiyan"
   },
   {
     "id": "arataki-itto",
     "name": "荒瀧一斗",
     "en": "Arataki Itto",
-    "sort": "こうたきいっと",
-    "rarity": 5
+    "sort": "あらたきいっと",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Itto"
   },
   {
     "id": "keqing",
     "name": "刻晴",
     "en": "Keqing",
     "sort": "こくせい",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Keqing"
   },
   {
     "id": "collei",
     "name": "コレイ",
     "en": "Collei",
     "sort": "これい",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Collei"
+  },
+  {
+    "id": "columbina",
+    "name": "コロンビーナ",
+    "en": "Columbina",
+    "sort": "ころんびーな",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Columbina"
   },
   {
     "id": "gorou",
     "name": "ゴロー",
     "en": "Gorou",
-    "sort": "ごろ",
-    "rarity": 4
+    "sort": "ごろー",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Gorou"
   },
   {
     "id": "shenhe",
     "name": "申鶴",
     "en": "Shenhe",
-    "sort": "さるつる",
-    "rarity": 5
+    "sort": "しんかく",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Shenhe"
   },
   {
-    "id": "kokomi",
+    "id": "sangonomiya-kokomi",
     "name": "珊瑚宮心海",
     "en": "Sangonomiya Kokomi",
-    "sort": "さんごみやしんかい",
-    "rarity": 5
+    "sort": "さんごみやここみ",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Kokomi"
   },
   {
     "id": "sigewinne",
     "name": "シグウィン",
     "en": "Sigewinne",
     "sort": "しぐうぃん",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Sigewinne"
   },
   {
     "id": "qiqi",
     "name": "七七",
     "en": "Qiqi",
-    "sort": "しちしち",
-    "rarity": 5
+    "sort": "なな",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Qiqi"
+  },
+  {
+    "id": "citlali",
+    "name": "シトラリ",
+    "en": "Citlali",
+    "sort": "しとらり",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Citlali"
   },
   {
     "id": "charlotte",
     "name": "シャルロット",
     "en": "Charlotte",
     "sort": "しゃるろっと",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Charlotte"
   },
   {
     "id": "chevreuse",
     "name": "シュヴルーズ",
     "en": "Chevreuse",
-    "sort": "しゅゔるず",
-    "rarity": 4
+    "sort": "しゅゔるーず",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Chevreuse"
   },
   {
     "id": "zhongli",
     "name": "鍾離",
     "en": "Zhongli",
     "sort": "しょうり",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Zhongli"
+  },
+  {
+    "id": "xilonen",
+    "name": "シロネン",
+    "en": "Xilonen",
+    "sort": "しろねん",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Xilonen"
   },
   {
     "id": "xinyan",
     "name": "辛炎",
     "en": "Xinyan",
-    "sort": "しんほのお",
-    "rarity": 4
+    "sort": "しんえん",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Xinyan"
   },
   {
     "id": "chongyun",
     "name": "重雲",
     "en": "Chongyun",
-    "sort": "じゅうくも",
-    "rarity": 4
+    "sort": "ちょううん",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Chongyun"
   },
   {
     "id": "jean",
     "name": "ジン",
     "en": "Jean",
     "sort": "じん",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Qin"
+  },
+  {
+    "id": "skirk",
+    "name": "スカーク",
+    "en": "Skirk",
+    "sort": "すかーく",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_SkirkNew"
   },
   {
     "id": "sucrose",
     "name": "スクロース",
     "en": "Sucrose",
-    "sort": "すくろす",
-    "rarity": 4
+    "sort": "すくろーす",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Sucrose"
   },
   {
     "id": "sethos",
     "name": "セトス",
     "en": "Sethos",
     "sort": "せとす",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Sethos"
   },
   {
     "id": "cyno",
     "name": "セノ",
     "en": "Cyno",
     "sort": "せの",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Cyno"
   },
   {
     "id": "sayu",
     "name": "早柚",
     "en": "Sayu",
-    "sort": "そうゆず",
-    "rarity": 4
+    "sort": "さゆ",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Sayu"
   },
   {
     "id": "traveler-geo",
     "name": "旅人（岩）",
-    "en": "Traveler",
+    "en": "Traveler (geo)",
     "sort": "たびびと（いわ）",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_PlayerBoy",
+    "special": "traveler",
+    "element": "geo"
   },
   {
     "id": "traveler-anemo",
     "name": "旅人（風）",
-    "en": "Traveler",
+    "en": "Traveler (anemo)",
     "sort": "たびびと（かぜ）",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_PlayerBoy",
+    "special": "traveler",
+    "element": "anemo"
   },
   {
     "id": "traveler-electro",
     "name": "旅人（雷）",
-    "en": "Traveler",
+    "en": "Traveler (electro)",
     "sort": "たびびと（かみなり）",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_PlayerBoy",
+    "special": "traveler",
+    "element": "electro"
   },
   {
     "id": "traveler-dendro",
     "name": "旅人（草）",
-    "en": "Traveler",
+    "en": "Traveler (dendro)",
     "sort": "たびびと（くさ）",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_PlayerBoy",
+    "special": "traveler",
+    "element": "dendro"
+  },
+  {
+    "id": "traveler-cryo",
+    "name": "旅人（氷）",
+    "en": "Traveler (cryo)",
+    "sort": "たびびと（こおり）",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_PlayerBoy",
+    "special": "traveler",
+    "element": "cryo"
   },
   {
     "id": "traveler-pyro",
     "name": "旅人（炎）",
-    "en": "Traveler (Pyro)",
+    "en": "Traveler (pyro)",
     "sort": "たびびと（ほのお）",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_PlayerBoy",
+    "special": "traveler",
+    "element": "pyro"
   },
   {
     "id": "traveler-hydro",
     "name": "旅人（水）",
-    "en": "Traveler",
+    "en": "Traveler (hydro)",
     "sort": "たびびと（みず）",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_PlayerBoy",
+    "special": "traveler",
+    "element": "hydro"
   },
   {
     "id": "tartaglia",
     "name": "タルタリヤ",
     "en": "Tartaglia",
     "sort": "たるたりや",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Tartaglia"
+  },
+  {
+    "id": "dahlia",
+    "name": "ダリア",
+    "en": "Dahlia",
+    "sort": "だりあ",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Dahlia"
   },
   {
     "id": "chiori",
     "name": "千織",
     "en": "Chiori",
     "sort": "ちおり",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Chiori"
+  },
+  {
+    "id": "chasca",
+    "name": "チャスカ",
+    "en": "Chasca",
+    "sort": "ちゃすか",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Chasca"
   },
   {
     "id": "tighnari",
     "name": "ティナリ",
     "en": "Tighnari",
     "sort": "てぃなり",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Tighnari"
   },
   {
     "id": "diona",
     "name": "ディオナ",
     "en": "Diona",
     "sort": "でぃおな",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Diona"
   },
   {
     "id": "dehya",
     "name": "ディシア",
     "en": "Dehya",
     "sort": "でぃしあ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Dehya"
   },
   {
     "id": "diluc",
     "name": "ディルック",
     "en": "Diluc",
     "sort": "でぃるっく",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Diluc"
   },
   {
     "id": "thoma",
     "name": "トーマ",
     "en": "Thoma",
-    "sort": "とま",
-    "rarity": 4
+    "sort": "とーま",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Tohma"
+  },
+  {
+    "id": "durin",
+    "name": "ドゥリン",
+    "en": "Durin",
+    "sort": "どぅりん",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Durin"
+  },
+  {
+    "id": "doll-geo",
+    "name": "ドール（岩）",
+    "en": "Doll (geo)",
+    "sort": "どーる（いわ）",
+    "rarity": 5,
+    "icon": "./assets/doll.webp",
+    "special": "doll",
+    "element": "geo"
+  },
+  {
+    "id": "doll-anemo",
+    "name": "ドール（風）",
+    "en": "Doll (anemo)",
+    "sort": "どーる（かぜ）",
+    "rarity": 5,
+    "icon": "./assets/doll.webp",
+    "special": "doll",
+    "element": "anemo"
+  },
+  {
+    "id": "doll-electro",
+    "name": "ドール（雷）",
+    "en": "Doll (electro)",
+    "sort": "どーる（かみなり）",
+    "rarity": 5,
+    "icon": "./assets/doll.webp",
+    "special": "doll",
+    "element": "electro"
+  },
+  {
+    "id": "doll-dendro",
+    "name": "ドール（草）",
+    "en": "Doll (dendro)",
+    "sort": "どーる（くさ）",
+    "rarity": 5,
+    "icon": "./assets/doll.webp",
+    "special": "doll",
+    "element": "dendro"
+  },
+  {
+    "id": "doll-cryo",
+    "name": "ドール（氷）",
+    "en": "Doll (cryo)",
+    "sort": "どーる（こおり）",
+    "rarity": 5,
+    "icon": "./assets/doll.webp",
+    "special": "doll",
+    "element": "cryo"
+  },
+  {
+    "id": "doll-pyro",
+    "name": "ドール（炎）",
+    "en": "Doll (pyro)",
+    "sort": "どーる（ほのお）",
+    "rarity": 5,
+    "icon": "./assets/doll.webp",
+    "special": "doll",
+    "element": "pyro"
+  },
+  {
+    "id": "doll-hydro",
+    "name": "ドール（水）",
+    "en": "Doll (hydro)",
+    "sort": "どーる（みず）",
+    "rarity": 5,
+    "icon": "./assets/doll.webp",
+    "special": "doll",
+    "element": "hydro"
   },
   {
     "id": "dori",
     "name": "ドリー",
     "en": "Dori",
-    "sort": "どり",
-    "rarity": 4
+    "sort": "どりー",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Dori"
   },
   {
     "id": "nahida",
     "name": "ナヒーダ",
     "en": "Nahida",
-    "sort": "なひだ",
-    "rarity": 5
+    "sort": "なひーだ",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Nahida"
   },
   {
     "id": "navia",
     "name": "ナヴィア",
     "en": "Navia",
     "sort": "なゔぃあ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Navia"
   },
   {
     "id": "nilou",
     "name": "ニィロウ",
     "en": "Nilou",
     "sort": "にぃろう",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Nilou"
   },
   {
     "id": "neuvillette",
     "name": "ヌヴィレット",
     "en": "Neuvillette",
     "sort": "ぬゔぃれっと",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Neuvillette"
+  },
+  {
+    "id": "nefer",
+    "name": "ネフェル",
+    "en": "Nefer",
+    "sort": "ねふぇる",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Nefer"
   },
   {
     "id": "noelle",
     "name": "ノエル",
     "en": "Noelle",
     "sort": "のえる",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Noel"
   },
   {
     "id": "barbara",
     "name": "バーバラ",
     "en": "Barbara",
-    "sort": "ばばら",
-    "rarity": 4
+    "sort": "ばーばら",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Barbara"
   },
   {
     "id": "faruzan",
     "name": "ファルザン",
     "en": "Faruzan",
     "sort": "ふぁるざん",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Faruzan"
   },
   {
     "id": "fischl",
     "name": "フィッシュル",
     "en": "Fischl",
     "sort": "ふぃっしゅる",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Fischl"
   },
   {
     "id": "furina",
     "name": "フリーナ",
     "en": "Furina",
-    "sort": "ふりな",
-    "rarity": 5
+    "sort": "ふりーな",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Furina"
+  },
+  {
+    "id": "flins",
+    "name": "フリンズ",
+    "en": "Flins",
+    "sort": "ふりんず",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Flins"
   },
   {
     "id": "freminet",
     "name": "フレミネ",
     "en": "Freminet",
     "sort": "ふれみね",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Freminet"
   },
   {
     "id": "bennett",
     "name": "ベネット",
     "en": "Bennett",
     "sort": "べねっと",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Bennett"
   },
   {
     "id": "wanderer",
     "name": "放浪者",
     "en": "Wanderer",
     "sort": "ほうろうしゃ",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Wanderer"
   },
   {
     "id": "beidou",
     "name": "北斗",
     "en": "Beidou",
     "sort": "ほくと",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Beidou"
+  },
+  {
+    "id": "mavuika",
+    "name": "マーヴィカ",
+    "en": "Mavuika",
+    "sort": "まーゔぃか",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Mavuika"
+  },
+  {
+    "id": "mavuika-trial",
+    "name": "マーヴィカ（お試し）",
+    "en": "Mavuika (Trial)",
+    "sort": "まーゔぃか（おためし）",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Mavuika"
   },
   {
     "id": "mika",
     "name": "ミカ",
     "en": "Mika",
     "sort": "みか",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Mika"
   },
   {
     "id": "mualani",
     "name": "ムアラニ",
     "en": "Mualani",
     "sort": "むあらに",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Mualani"
   },
   {
     "id": "mona",
     "name": "モナ",
     "en": "Mona",
     "sort": "もな",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Mona"
   },
   {
-    "id": "kazuha",
+    "id": "kaedehara-kazuha",
     "name": "楓原万葉",
     "en": "Kaedehara Kazuha",
-    "sort": "もみじはらまんよう",
-    "rarity": 5
+    "sort": "かえではらかずは",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Kazuha"
   },
   {
     "id": "yae-miko",
     "name": "八重神子",
     "en": "Yae Miko",
-    "sort": "やえかみこ",
-    "rarity": 5
+    "sort": "やえみこ",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Yae"
+  },
+  {
+    "id": "jahoda",
+    "name": "ヤフォダ",
+    "en": "Jahoda",
+    "sort": "やふぉだ",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Jahoda"
+  },
+  {
+    "id": "yumemizuki-mizuki",
+    "name": "夢見月瑞希",
+    "en": "Yumemizuki Mizuki",
+    "sort": "ゆめみずきみずき",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Mizuki"
   },
   {
     "id": "yoimiya",
     "name": "宵宮",
     "en": "Yoimiya",
     "sort": "よいみや",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Yoimiya"
   },
   {
     "id": "yaoyao",
     "name": "ヨォーヨ",
     "en": "Yaoyao",
-    "sort": "よぉよ",
-    "rarity": 4
+    "sort": "よぉーよ",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Yaoyao"
   },
   {
     "id": "gaming",
     "name": "嘉明",
     "en": "Gaming",
-    "sort": "よしあき",
-    "rarity": 4
+    "sort": "がみん",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Gaming"
   },
   {
     "id": "yelan",
     "name": "夜蘭",
     "en": "Yelan",
-    "sort": "よるらん",
-    "rarity": 5
+    "sort": "いえらん",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Yelan"
   },
   {
-    "id": "raiden",
+    "id": "raiden-shogun",
     "name": "雷電将軍",
     "en": "Raiden Shogun",
     "sort": "らいでんしょうぐん",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Shougun"
+  },
+  {
+    "id": "lauma",
+    "name": "ラウマ",
+    "en": "Lauma",
+    "sort": "らうま",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Lauma"
   },
   {
     "id": "wriothesley",
     "name": "リオセスリ",
     "en": "Wriothesley",
     "sort": "りおせすり",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Wriothesley"
   },
   {
     "id": "lisa",
     "name": "リサ",
     "en": "Lisa",
     "sort": "りさ",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Lisa"
   },
   {
     "id": "lyney",
     "name": "リネ",
     "en": "Lyney",
     "sort": "りね",
-    "rarity": 5
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Liney"
   },
   {
     "id": "lynette",
     "name": "リネット",
     "en": "Lynette",
     "sort": "りねっと",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Linette"
   },
   {
     "id": "layla",
     "name": "レイラ",
     "en": "Layla",
     "sort": "れいら",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Layla"
   },
   {
     "id": "razor",
     "name": "レザー",
     "en": "Razor",
-    "sort": "れざ",
-    "rarity": 4
+    "sort": "れざー",
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Razor"
   },
   {
     "id": "rosaria",
     "name": "ロサリア",
     "en": "Rosaria",
     "sort": "ろさりあ",
-    "rarity": 4
+    "rarity": 4,
+    "icon": "UI_AvatarIcon_Side_Rosaria"
+  },
+  {
+    "id": "varesa",
+    "name": "ヴァレサ",
+    "en": "Varesa",
+    "sort": "ゔぁれさ",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Varesa"
   },
   {
     "id": "xiao",
     "name": "魈",
     "en": "Xiao",
-    "sort": "魈",
-    "rarity": 5
+    "sort": "しょう",
+    "rarity": 5,
+    "icon": "UI_AvatarIcon_Side_Xiao"
   }
 ]
