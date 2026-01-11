@@ -21,7 +21,8 @@
     "en": "Alhaitham",
     "sort": "あるはいぜん",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Alhatham"
+    "icon": "UI_AvatarIcon_Side_Alhatham",
+    "jmp_id": "alhaitham"
   },
   {
     "id": "albedo",
@@ -29,7 +30,8 @@
     "en": "Albedo",
     "sort": "あるべど",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Albedo"
+    "icon": "UI_AvatarIcon_Side_Albedo",
+    "jmp_id": "albedo"
   },
   {
     "id": "arlecchino",
@@ -37,7 +39,8 @@
     "en": "Arlecchino",
     "sort": "あるれっきの",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Arlecchino"
+    "icon": "UI_AvatarIcon_Side_Arlecchino",
+    "jmp_id": "arlecchino"
   },
   {
     "id": "aloy",
@@ -45,7 +48,8 @@
     "en": "Aloy",
     "sort": "あろい",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Aloy"
+    "icon": "UI_AvatarIcon_Side_Aloy",
+    "jmp_id": "aloy"
   },
   {
     "id": "amber",
@@ -53,7 +57,8 @@
     "en": "Amber",
     "sort": "あんば",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Ambor"
+    "icon": "UI_AvatarIcon_Side_Ambor",
+    "jmp_id": "amber"
   },
   {
     "id": "iansan",
@@ -85,7 +90,8 @@
     "en": "Venti",
     "sort": "うぇんてぃ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Venti"
+    "icon": "UI_AvatarIcon_Side_Venti",
+    "jmp_id": "venti"
   },
   {
     "id": "eula",
@@ -93,7 +99,8 @@
     "en": "Eula",
     "sort": "えうるあ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Eula"
+    "icon": "UI_AvatarIcon_Side_Eula",
+    "jmp_id": "eula"
   },
   {
     "id": "escoffier",
@@ -109,7 +116,8 @@
     "en": "Emilie",
     "sort": "えみりえ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Emilie"
+    "icon": "UI_AvatarIcon_Side_Emilie",
+    "jmp_id": "emilie"
   },
   {
     "id": "baizhu",
@@ -117,7 +125,8 @@
     "en": "Baizhu",
     "sort": "びゃくじゅつ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Baizhuer"
+    "icon": "UI_AvatarIcon_Side_Baizhuer",
+    "jmp_id": "baizhu"
   },
   {
     "id": "ororon",
@@ -133,7 +142,8 @@
     "en": "Xiangling",
     "sort": "しゃんりん",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Xiangling"
+    "icon": "UI_AvatarIcon_Side_Xiangling",
+    "jmp_id": "xiangling"
   },
   {
     "id": "kachina",
@@ -141,7 +151,8 @@
     "en": "Kachina",
     "sort": "かちーな",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Kachina"
+    "icon": "UI_AvatarIcon_Side_Kachina",
+    "jmp_id": "kachina"
   },
   {
     "id": "shikanoin-heizou",
@@ -149,7 +160,8 @@
     "en": "Shikanoin Heizou",
     "sort": "しかのいんへいぞう",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Heizo"
+    "icon": "UI_AvatarIcon_Side_Heizo",
+    "jmp_id": "shikanoin-heizou"
   },
   {
     "id": "kamisato-ayaka",
@@ -175,7 +187,8 @@
     "en": "Ganyu",
     "sort": "かんう",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Ganyu"
+    "icon": "UI_AvatarIcon_Side_Ganyu",
+    "jmp_id": "ganyu"
   },
   {
     "id": "xianyun",
@@ -183,7 +196,8 @@
     "en": "Xianyun",
     "sort": "かんうん",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Liuyun"
+    "icon": "UI_AvatarIcon_Side_Liuyun",
+    "jmp_id": "xianyun"
   },
   {
     "id": "kaveh",
@@ -191,7 +205,8 @@
     "en": "Kaveh",
     "sort": "かーゔぇ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Kaveh"
+    "icon": "UI_AvatarIcon_Side_Kaveh",
+    "jmp_id": "kaveh"
   },
   {
     "id": "kaeya",
@@ -199,7 +214,8 @@
     "en": "Kaeya",
     "sort": "がいあ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Kaeya"
+    "icon": "UI_AvatarIcon_Side_Kaeya",
+    "jmp_id": "kaeya"
   },
   {
     "id": "kinich",
@@ -207,7 +223,8 @@
     "en": "Kinich",
     "sort": "きぃにち",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Kinich"
+    "icon": "UI_AvatarIcon_Side_Kinich",
+    "jmp_id": "kinich"
   },
   {
     "id": "candace",
@@ -215,7 +232,8 @@
     "en": "Candace",
     "sort": "きゃんでぃす",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Candace"
+    "icon": "UI_AvatarIcon_Side_Candace",
+    "jmp_id": "candace"
   },
   {
     "id": "kuki-shinobu",
@@ -223,7 +241,8 @@
     "en": "Kuki Shinobu",
     "sort": "くきしのぶ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Shinobu"
+    "icon": "UI_AvatarIcon_Side_Shinobu",
+    "jmp_id": "kuki-shinobu"
   },
   {
     "id": "kujou-sara",
@@ -240,7 +259,8 @@
     "en": "Kirara",
     "sort": "きらら",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Momoka"
+    "icon": "UI_AvatarIcon_Side_Momoka",
+    "jmp_id": "kirara"
   },
   {
     "id": "xingqiu",
@@ -248,7 +268,8 @@
     "en": "Xingqiu",
     "sort": "ゆくあき",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Xingqiu"
+    "icon": "UI_AvatarIcon_Side_Xingqiu",
+    "jmp_id": "xingqiu"
   },
   {
     "id": "ningguang",
@@ -256,7 +277,8 @@
     "en": "Ningguang",
     "sort": "ぎょうこう",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Ningguang"
+    "icon": "UI_AvatarIcon_Side_Ningguang",
+    "jmp_id": "ningguang"
   },
   {
     "id": "yun-jin",
@@ -264,7 +286,8 @@
     "en": "Yun Jin",
     "sort": "うんきん",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Yunjin"
+    "icon": "UI_AvatarIcon_Side_Yunjin",
+    "jmp_id": "yun-jin"
   },
   {
     "id": "hu-tao",
@@ -272,7 +295,8 @@
     "en": "Hu Tao",
     "sort": "ふーたお",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Hutao"
+    "icon": "UI_AvatarIcon_Side_Hutao",
+    "jmp_id": "hu-tao"
   },
   {
     "id": "klee",
@@ -280,7 +304,8 @@
     "en": "Klee",
     "sort": "くれ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Klee"
+    "icon": "UI_AvatarIcon_Side_Klee",
+    "jmp_id": "klee"
   },
   {
     "id": "clorinde",
@@ -288,7 +313,8 @@
     "en": "Clorinde",
     "sort": "くろりんで",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Clorinde"
+    "icon": "UI_AvatarIcon_Side_Clorinde",
+    "jmp_id": "clorinde"
   },
   {
     "id": "yanfei",
@@ -296,7 +322,8 @@
     "en": "Yanfei",
     "sort": "えんひ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Feiyan"
+    "icon": "UI_AvatarIcon_Side_Feiyan",
+    "jmp_id": "yanfei"
   },
   {
     "id": "arataki-itto",
@@ -304,7 +331,8 @@
     "en": "Arataki Itto",
     "sort": "あらたきいっと",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Itto"
+    "icon": "UI_AvatarIcon_Side_Itto",
+    "jmp_id": "arataki-itto"
   },
   {
     "id": "keqing",
@@ -312,7 +340,8 @@
     "en": "Keqing",
     "sort": "こくせい",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Keqing"
+    "icon": "UI_AvatarIcon_Side_Keqing",
+    "jmp_id": "keqing"
   },
   {
     "id": "collei",
@@ -320,7 +349,8 @@
     "en": "Collei",
     "sort": "これい",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Collei"
+    "icon": "UI_AvatarIcon_Side_Collei",
+    "jmp_id": "collei"
   },
   {
     "id": "columbina",
@@ -336,7 +366,8 @@
     "en": "Gorou",
     "sort": "ごろー",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Gorou"
+    "icon": "UI_AvatarIcon_Side_Gorou",
+    "jmp_id": "gorou"
   },
   {
     "id": "shenhe",
@@ -344,7 +375,8 @@
     "en": "Shenhe",
     "sort": "しんかく",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Shenhe"
+    "icon": "UI_AvatarIcon_Side_Shenhe",
+    "jmp_id": "shenhe"
   },
   {
     "id": "sangonomiya-kokomi",
@@ -361,7 +393,8 @@
     "en": "Sigewinne",
     "sort": "しぐうぃん",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Sigewinne"
+    "icon": "UI_AvatarIcon_Side_Sigewinne",
+    "jmp_id": "sigewinne"
   },
   {
     "id": "qiqi",
@@ -369,7 +402,8 @@
     "en": "Qiqi",
     "sort": "なな",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Qiqi"
+    "icon": "UI_AvatarIcon_Side_Qiqi",
+    "jmp_id": "qiqi"
   },
   {
     "id": "citlali",
@@ -385,7 +419,8 @@
     "en": "Charlotte",
     "sort": "しゃるろっと",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Charlotte"
+    "icon": "UI_AvatarIcon_Side_Charlotte",
+    "jmp_id": "charlotte"
   },
   {
     "id": "chevreuse",
@@ -393,7 +428,8 @@
     "en": "Chevreuse",
     "sort": "しゅゔるーず",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Chevreuse"
+    "icon": "UI_AvatarIcon_Side_Chevreuse",
+    "jmp_id": "chevreuse"
   },
   {
     "id": "zhongli",
@@ -401,7 +437,8 @@
     "en": "Zhongli",
     "sort": "しょうり",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Zhongli"
+    "icon": "UI_AvatarIcon_Side_Zhongli",
+    "jmp_id": "zhongli"
   },
   {
     "id": "xilonen",
@@ -417,7 +454,8 @@
     "en": "Xinyan",
     "sort": "しんえん",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Xinyan"
+    "icon": "UI_AvatarIcon_Side_Xinyan",
+    "jmp_id": "xinyan"
   },
   {
     "id": "chongyun",
@@ -425,7 +463,8 @@
     "en": "Chongyun",
     "sort": "ちょううん",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Chongyun"
+    "icon": "UI_AvatarIcon_Side_Chongyun",
+    "jmp_id": "chongyun"
   },
   {
     "id": "jean",
@@ -433,7 +472,8 @@
     "en": "Jean",
     "sort": "じん",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Qin"
+    "icon": "UI_AvatarIcon_Side_Qin",
+    "jmp_id": "jean"
   },
   {
     "id": "skirk",
@@ -449,7 +489,8 @@
     "en": "Sucrose",
     "sort": "すくろーす",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Sucrose"
+    "icon": "UI_AvatarIcon_Side_Sucrose",
+    "jmp_id": "sucrose"
   },
   {
     "id": "sethos",
@@ -457,7 +498,8 @@
     "en": "Sethos",
     "sort": "せとす",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Sethos"
+    "icon": "UI_AvatarIcon_Side_Sethos",
+    "jmp_id": "sethos"
   },
   {
     "id": "cyno",
@@ -465,7 +507,8 @@
     "en": "Cyno",
     "sort": "せの",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Cyno"
+    "icon": "UI_AvatarIcon_Side_Cyno",
+    "jmp_id": "cyno"
   },
   {
     "id": "sayu",
@@ -473,7 +516,8 @@
     "en": "Sayu",
     "sort": "さゆ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Sayu"
+    "icon": "UI_AvatarIcon_Side_Sayu",
+    "jmp_id": "sayu"
   },
   {
     "id": "traveler-geo",
@@ -483,7 +527,8 @@
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_PlayerBoy",
     "special": "traveler",
-    "element": "geo"
+    "element": "geo",
+    "jmp_id": "traveler-geo"
   },
   {
     "id": "traveler-anemo",
@@ -493,7 +538,8 @@
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_PlayerBoy",
     "special": "traveler",
-    "element": "anemo"
+    "element": "anemo",
+    "jmp_id": "traveler-anemo"
   },
   {
     "id": "traveler-electro",
@@ -503,7 +549,8 @@
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_PlayerBoy",
     "special": "traveler",
-    "element": "electro"
+    "element": "electro",
+    "jmp_id": "traveler-electro"
   },
   {
     "id": "traveler-dendro",
@@ -513,7 +560,8 @@
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_PlayerBoy",
     "special": "traveler",
-    "element": "dendro"
+    "element": "dendro",
+    "jmp_id": "traveler-dendro"
   },
   {
     "id": "traveler-cryo",
@@ -533,7 +581,8 @@
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_PlayerBoy",
     "special": "traveler",
-    "element": "pyro"
+    "element": "pyro",
+    "jmp_id": "traveler-pyro"
   },
   {
     "id": "traveler-hydro",
@@ -543,7 +592,8 @@
     "rarity": 5,
     "icon": "UI_AvatarIcon_Side_PlayerBoy",
     "special": "traveler",
-    "element": "hydro"
+    "element": "hydro",
+    "jmp_id": "traveler-hydro"
   },
   {
     "id": "tartaglia",
@@ -551,7 +601,8 @@
     "en": "Tartaglia",
     "sort": "たるたりや",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Tartaglia"
+    "icon": "UI_AvatarIcon_Side_Tartaglia",
+    "jmp_id": "tartaglia"
   },
   {
     "id": "dahlia",
@@ -567,7 +618,8 @@
     "en": "Chiori",
     "sort": "ちおり",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Chiori"
+    "icon": "UI_AvatarIcon_Side_Chiori",
+    "jmp_id": "chiori"
   },
   {
     "id": "chasca",
@@ -583,7 +635,8 @@
     "en": "Tighnari",
     "sort": "てぃなり",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Tighnari"
+    "icon": "UI_AvatarIcon_Side_Tighnari",
+    "jmp_id": "tighnari"
   },
   {
     "id": "diona",
@@ -591,7 +644,8 @@
     "en": "Diona",
     "sort": "でぃおな",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Diona"
+    "icon": "UI_AvatarIcon_Side_Diona",
+    "jmp_id": "diona"
   },
   {
     "id": "dehya",
@@ -599,7 +653,8 @@
     "en": "Dehya",
     "sort": "でぃしあ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Dehya"
+    "icon": "UI_AvatarIcon_Side_Dehya",
+    "jmp_id": "dehya"
   },
   {
     "id": "diluc",
@@ -607,7 +662,8 @@
     "en": "Diluc",
     "sort": "でぃるっく",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Diluc"
+    "icon": "UI_AvatarIcon_Side_Diluc",
+    "jmp_id": "diluc"
   },
   {
     "id": "thoma",
@@ -615,7 +671,8 @@
     "en": "Thoma",
     "sort": "とーま",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Tohma"
+    "icon": "UI_AvatarIcon_Side_Tohma",
+    "jmp_id": "thoma"
   },
   {
     "id": "durin",
@@ -701,7 +758,8 @@
     "en": "Dori",
     "sort": "どりー",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Dori"
+    "icon": "UI_AvatarIcon_Side_Dori",
+    "jmp_id": "dori"
   },
   {
     "id": "nahida",
@@ -709,7 +767,8 @@
     "en": "Nahida",
     "sort": "なひーだ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Nahida"
+    "icon": "UI_AvatarIcon_Side_Nahida",
+    "jmp_id": "nahida"
   },
   {
     "id": "navia",
@@ -717,7 +776,8 @@
     "en": "Navia",
     "sort": "なゔぃあ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Navia"
+    "icon": "UI_AvatarIcon_Side_Navia",
+    "jmp_id": "navia"
   },
   {
     "id": "nilou",
@@ -725,7 +785,8 @@
     "en": "Nilou",
     "sort": "にぃろう",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Nilou"
+    "icon": "UI_AvatarIcon_Side_Nilou",
+    "jmp_id": "nilou"
   },
   {
     "id": "neuvillette",
@@ -733,7 +794,8 @@
     "en": "Neuvillette",
     "sort": "ぬゔぃれっと",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Neuvillette"
+    "icon": "UI_AvatarIcon_Side_Neuvillette",
+    "jmp_id": "neuvillette"
   },
   {
     "id": "nefer",
@@ -749,7 +811,8 @@
     "en": "Noelle",
     "sort": "のえる",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Noel"
+    "icon": "UI_AvatarIcon_Side_Noel",
+    "jmp_id": "noelle"
   },
   {
     "id": "barbara",
@@ -757,7 +820,8 @@
     "en": "Barbara",
     "sort": "ばーばら",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Barbara"
+    "icon": "UI_AvatarIcon_Side_Barbara",
+    "jmp_id": "barbara"
   },
   {
     "id": "faruzan",
@@ -765,7 +829,8 @@
     "en": "Faruzan",
     "sort": "ふぁるざん",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Faruzan"
+    "icon": "UI_AvatarIcon_Side_Faruzan",
+    "jmp_id": "faruzan"
   },
   {
     "id": "fischl",
@@ -773,7 +838,8 @@
     "en": "Fischl",
     "sort": "ふぃっしゅる",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Fischl"
+    "icon": "UI_AvatarIcon_Side_Fischl",
+    "jmp_id": "fischl"
   },
   {
     "id": "furina",
@@ -781,7 +847,8 @@
     "en": "Furina",
     "sort": "ふりーな",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Furina"
+    "icon": "UI_AvatarIcon_Side_Furina",
+    "jmp_id": "furina"
   },
   {
     "id": "flins",
@@ -797,7 +864,8 @@
     "en": "Freminet",
     "sort": "ふれみね",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Freminet"
+    "icon": "UI_AvatarIcon_Side_Freminet",
+    "jmp_id": "freminet"
   },
   {
     "id": "bennett",
@@ -805,7 +873,8 @@
     "en": "Bennett",
     "sort": "べねっと",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Bennett"
+    "icon": "UI_AvatarIcon_Side_Bennett",
+    "jmp_id": "bennett"
   },
   {
     "id": "wanderer",
@@ -813,7 +882,8 @@
     "en": "Wanderer",
     "sort": "ほうろうしゃ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Wanderer"
+    "icon": "UI_AvatarIcon_Side_Wanderer",
+    "jmp_id": "wanderer"
   },
   {
     "id": "beidou",
@@ -821,7 +891,8 @@
     "en": "Beidou",
     "sort": "ほくと",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Beidou"
+    "icon": "UI_AvatarIcon_Side_Beidou",
+    "jmp_id": "beidou"
   },
   {
     "id": "mavuika",
@@ -837,7 +908,8 @@
     "en": "Mika",
     "sort": "みか",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Mika"
+    "icon": "UI_AvatarIcon_Side_Mika",
+    "jmp_id": "mika"
   },
   {
     "id": "mualani",
@@ -845,7 +917,8 @@
     "en": "Mualani",
     "sort": "むあらに",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Mualani"
+    "icon": "UI_AvatarIcon_Side_Mualani",
+    "jmp_id": "mualani"
   },
   {
     "id": "mona",
@@ -853,7 +926,8 @@
     "en": "Mona",
     "sort": "もな",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Mona"
+    "icon": "UI_AvatarIcon_Side_Mona",
+    "jmp_id": "mona"
   },
   {
     "id": "kaedehara-kazuha",
@@ -870,7 +944,8 @@
     "en": "Yae Miko",
     "sort": "やえみこ",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Yae"
+    "icon": "UI_AvatarIcon_Side_Yae",
+    "jmp_id": "yae-miko"
   },
   {
     "id": "jahoda",
@@ -894,7 +969,8 @@
     "en": "Yoimiya",
     "sort": "よいみや",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Yoimiya"
+    "icon": "UI_AvatarIcon_Side_Yoimiya",
+    "jmp_id": "yoimiya"
   },
   {
     "id": "yaoyao",
@@ -902,7 +978,8 @@
     "en": "Yaoyao",
     "sort": "よぉーよ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Yaoyao"
+    "icon": "UI_AvatarIcon_Side_Yaoyao",
+    "jmp_id": "yaoyao"
   },
   {
     "id": "gaming",
@@ -910,7 +987,8 @@
     "en": "Gaming",
     "sort": "がみん",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Gaming"
+    "icon": "UI_AvatarIcon_Side_Gaming",
+    "jmp_id": "gaming"
   },
   {
     "id": "yelan",
@@ -918,7 +996,8 @@
     "en": "Yelan",
     "sort": "いえらん",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Yelan"
+    "icon": "UI_AvatarIcon_Side_Yelan",
+    "jmp_id": "yelan"
   },
   {
     "id": "raiden-shogun",
@@ -943,7 +1022,8 @@
     "en": "Wriothesley",
     "sort": "りおせすり",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Wriothesley"
+    "icon": "UI_AvatarIcon_Side_Wriothesley",
+    "jmp_id": "wriothesley"
   },
   {
     "id": "lisa",
@@ -951,7 +1031,8 @@
     "en": "Lisa",
     "sort": "りさ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Lisa"
+    "icon": "UI_AvatarIcon_Side_Lisa",
+    "jmp_id": "lisa"
   },
   {
     "id": "lyney",
@@ -959,7 +1040,8 @@
     "en": "Lyney",
     "sort": "りね",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Liney"
+    "icon": "UI_AvatarIcon_Side_Liney",
+    "jmp_id": "lyney"
   },
   {
     "id": "lynette",
@@ -967,7 +1049,8 @@
     "en": "Lynette",
     "sort": "りねっと",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Linette"
+    "icon": "UI_AvatarIcon_Side_Linette",
+    "jmp_id": "lynette"
   },
   {
     "id": "layla",
@@ -975,7 +1058,8 @@
     "en": "Layla",
     "sort": "れいら",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Layla"
+    "icon": "UI_AvatarIcon_Side_Layla",
+    "jmp_id": "layla"
   },
   {
     "id": "razor",
@@ -983,7 +1067,8 @@
     "en": "Razor",
     "sort": "れざー",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Razor"
+    "icon": "UI_AvatarIcon_Side_Razor",
+    "jmp_id": "razor"
   },
   {
     "id": "rosaria",
@@ -991,7 +1076,8 @@
     "en": "Rosaria",
     "sort": "ろさりあ",
     "rarity": 4,
-    "icon": "UI_AvatarIcon_Side_Rosaria"
+    "icon": "UI_AvatarIcon_Side_Rosaria",
+    "jmp_id": "rosaria"
   },
   {
     "id": "varesa",
@@ -1007,6 +1093,7 @@
     "en": "Xiao",
     "sort": "しょう",
     "rarity": 5,
-    "icon": "UI_AvatarIcon_Side_Xiao"
+    "icon": "UI_AvatarIcon_Side_Xiao",
+    "jmp_id": "xiao"
   }
 ]
