@@ -8,9 +8,9 @@
   // ローカルアイコン置き場
   const LOCAL_ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
 
-  // 旅人・ドールの「基本」1枚
-  const TRAVELER_LOCAL_BASE = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
-  const DOLL_LOCAL          = new URL("./assets/icons/doll.webp", document.baseURI).toString();
+  // 旅人・ドールは「1枚固定」
+  const TRAVELER_LOCAL = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
+  const DOLL_LOCAL     = new URL("./assets/icons/doll.webp", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
@@ -38,8 +38,8 @@
 
   let HAS_RARITY = false;
 
-  // 最終フォールバック（最悪ここへ）
-  const fallbackIcon = TRAVELER_LOCAL_BASE;
+  // 最終フォールバック（最悪これ）
+  const fallbackIcon = TRAVELER_LOCAL;
 
   function loadJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; }
@@ -59,33 +59,35 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ===== 属性の表示用 =====
+  // ===== 属性表示 =====
   const ELEM_JP = {
     anemo: "風", geo: "岩", electro: "雷", dendro: "草",
     hydro: "水", pyro: "炎", cryo: "氷"
   };
 
-  // 旅人IDから element 推測（traveler-pyro 等）
+  // ID から属性推測（旅人/ドール専用で“確定”させる）
   function elementFromId(id){
     const s = String(id || "");
     const m = s.match(/^(traveler|doll)-([a-z]+)$/);
     if (!m) return null;
-    const elem = m[2];
+    const elem = String(m[2] || "").toLowerCase();
     return ELEM_JP[elem] ? elem : null;
   }
 
+  // ★ここが重要：旅人/ドールは「ID優先」で属性を確定（JSONの element が変でもズレない）
   function elemBadgeFromChar(c){
-    // ① データの element を最優先（ドールで確実に出すため）
+    const id = String(c?.id || "");
+
+    // ① traveler-* / doll-* は ID から必ず決める
+    if (id.startsWith("traveler-") || id.startsWith("doll-")) {
+      const e = elementFromId(id);
+      if (e) return ELEM_JP[e];
+    }
+
+    // ② それ以外は JSON の element を使う
     const e = typeof c?.element === "string" ? c.element.trim().toLowerCase() : "";
     if (ELEM_JP[e]) return ELEM_JP[e];
 
-    // ② special が traveler/doll ならIDから推測
-    const sp = String(c?.special || "").toLowerCase();
-    const id = String(c?.id || "");
-    if (sp === "traveler" || sp === "doll" || id.startsWith("traveler-") || id.startsWith("doll-")) {
-      const guessed = elementFromId(id);
-      if (guessed && ELEM_JP[guessed]) return ELEM_JP[guessed];
-    }
     return null;
   }
 
@@ -96,36 +98,29 @@
   }
 
   // ===== アイコンURL生成 =====
-  // 旅人：traveler-<elem>.webp を先に試して、無ければ traveler.webp
-  function travelerPreferredLocal(c){
-    const id = String(c?.id || "");
-    const elem = elementFromId(id); // pyro/hydro/... or null
-    if (elem) {
-      return `${LOCAL_ICON_DIR}traveler-${encodeURIComponent(elem)}.webp`;
-    }
-    return TRAVELER_LOCAL_BASE;
-  }
-
+  // ローカル（まずこれを試す）
   function localIconUrlByChar(c){
     const id = String(c?.id || "");
     if (!id) return fallbackIcon;
 
-    if (id.startsWith("traveler-")) return travelerPreferredLocal(c);
-    if (id.startsWith("doll-"))     return DOLL_LOCAL;
+    // 旅人は 1枚固定
+    if (id.startsWith("traveler-")) return TRAVELER_LOCAL;
 
+    // ドールも 1枚固定
+    if (id.startsWith("doll-")) return DOLL_LOCAL;
+
+    // その他キャラは id.webp
     return `${LOCAL_ICON_DIR}${encodeURIComponent(id)}.webp`;
   }
 
+  // リモート（ローカルが無い/壊れてる時の逃げ先）
   function remoteIconUrlByChar(c){
-    // jmp_id があるならそれ優先、無ければ id
     const rid = String(c?.jmp_id || c?.id || "");
     if (!rid) return `${BASE_ICON}/characters/traveler-anemo/icon`;
-
     return `${BASE_ICON}/characters/${encodeURIComponent(rid)}/icon`;
   }
 
-  // 画像のフォールバック（ローカル→リモート→旅人）
-  // ※ onerror="window.__genshin_icon_error(this)" で呼ぶ
+  // 画像フォールバック（local → remote → 最終fallback）
   window.__genshin_icon_error = function(img){
     try {
       const stage = img.dataset.stage || "local";
