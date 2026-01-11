@@ -2,8 +2,12 @@
   // ===== 設定 =====
   const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
 
-  // ローカルアイコン置き場（あなたが作ったフォルダ）
+  // jmp.blue（ネット側）
+  const BASE_ICON = "https://genshin.jmp.blue";
+
+  // ローカルアイコン置き場
   const LOCAL_ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
+
   // 旅人・ドールは「1枚固定」
   const TRAVELER_LOCAL = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
   const DOLL_LOCAL     = new URL("./assets/icons/doll.webp", document.baseURI).toString();
@@ -34,8 +38,7 @@
 
   let HAS_RARITY = false;
 
-  // 最終フォールバック（読み込み失敗時にここへ）
-  // 旅人のローカル画像に固定
+  // 最終フォールバック（最悪ここへ）
   const fallbackIcon = TRAVELER_LOCAL;
 
   function loadJSON(key, fallback) {
@@ -56,22 +59,49 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
-  // ★ ローカルアイコン運用 ★
-  // - traveler-* → ./assets/icons/traveler.webp
-  // - doll-*     → ./assets/icons/doll.webp
-  // - それ以外   → ./assets/icons/{id}.webp
-  // - 失敗したら onerror で fallbackIcon（旅人）へ
-  function iconUrlByChar(c){
+  // ===== アイコンURL生成 =====
+  function localIconUrlByChar(c){
     const id = String(c?.id || "");
+    if (!id) return fallbackIcon;
 
     if (id.startsWith("traveler-")) return TRAVELER_LOCAL;
     if (id.startsWith("doll-"))     return DOLL_LOCAL;
 
-    // 通常キャラは id.webp
-    if (id) return `${LOCAL_ICON_DIR}${encodeURIComponent(id)}.webp`;
-
-    return fallbackIcon;
+    return `${LOCAL_ICON_DIR}${encodeURIComponent(id)}.webp`;
   }
+
+  function remoteIconUrlByChar(c){
+    // jmp_id を入れてるならそれ優先、無ければ id
+    const rid = String(c?.jmp_id || c?.id || "");
+    if (!rid) return `${BASE_ICON}/characters/traveler-anemo/icon`;
+
+    return `${BASE_ICON}/characters/${encodeURIComponent(rid)}/icon`;
+  }
+
+  // 画像のフォールバック（ローカル→リモート→旅人）
+  // ※ onerror="window.__genshin_icon_error(this)" で呼ぶ
+  window.__genshin_icon_error = function(img){
+    try {
+      const stage = img.dataset.stage || "local";
+
+      if (stage === "local") {
+        img.dataset.stage = "remote";
+        img.src = img.dataset.remote || fallbackIcon;
+        return;
+      }
+      if (stage === "remote") {
+        img.dataset.stage = "fallback";
+        img.src = fallbackIcon;
+        return;
+      }
+      // fallback もダメなら終了（無限ループ防止）
+      img.onerror = null;
+    } catch (e) {
+      // 何かあっても落とさない
+      img.onerror = null;
+      img.src = fallbackIcon;
+    }
+  };
 
   const ELEM_JP = {
     anemo: "風", geo: "岩", electro: "雷", dendro: "草",
@@ -122,6 +152,9 @@
     const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
     const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
+    const local = localIconUrlByChar(c);
+    const remote = remoteIconUrlByChar(c);
+
     return `
       <div class="card"
            data-id="${escapeHTML(c.id)}"
@@ -129,8 +162,10 @@
         ${leftBadge}
         ${rightBadge}
         <img class="face ${cls}"
-             src="${iconUrlByChar(c)}"
-             onerror="this.onerror=null; this.src='${fallbackIcon}';" />
+             src="${escapeHTML(local)}"
+             data-remote="${escapeHTML(remote)}"
+             data-stage="local"
+             onerror="window.__genshin_icon_error(this)" />
         <div><div><b>${escapeHTML(c.name)}</b></div></div>
       </div>
     `;
@@ -243,13 +278,18 @@
           const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
           const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
+          const local = localIconUrlByChar(c);
+          const remote = remoteIconUrlByChar(c);
+
           return `
             <div class="card">
               ${leftBadge}
               ${rightBadge}
               <img class="face owned" style="width:64px;height:64px;"
-                   src="${iconUrlByChar(c)}"
-                   onerror="this.onerror=null; this.src='${fallbackIcon}';" />
+                   src="${escapeHTML(local)}"
+                   data-remote="${escapeHTML(remote)}"
+                   data-stage="local"
+                   onerror="window.__genshin_icon_error(this)" />
               <div>
                 <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b></div>
                 <div class="small">EN: ${escapeHTML(c.en || "")}</div>
