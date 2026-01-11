@@ -1,9 +1,10 @@
 (() => {
-  // genshin.jmp.blue はもうアイコンには使わない（id不一致で旅人に化ける原因）
-  // const BASE_ICON = "https://genshin.jmp.blue";
-  const ENKA_UI = "https://enka.network/ui";
+  // 正面を取りたい：まず genshin.jmp.blue を試す（成功するキャラは正面になる）
+  const BASE_ICON = "https://genshin.jmp.blue";
+  // 失敗したら Enka の side icon に落とす（横顔でも確実に出る）
+  const ENKA_UI   = "https://enka.network/ui";
 
-  // ★ GitHub Pages の末尾スラッシュ問題を回避
+  // GitHub Pages の末尾スラッシュ問題回避
   const DATA_URL = new URL("characters_ja.json", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
@@ -33,7 +34,7 @@
   // rarity がデータに存在するか
   let HAS_RARITY = false;
 
-  // フォールバックはEnkaの旅人（side icon）
+  // 最終フォールバック（何やってもダメな時だけ）
   const fallbackIcon = `${ENKA_UI}/UI_AvatarIcon_Side_Traveler.png`;
 
   function loadJSON(key, fallback) {
@@ -55,11 +56,25 @@
   }
 
   // -------------------------
-  // アイコンURL（ここが今回の本丸）
-  // - c.icon が "./assets/..." の場合 → ローカル
-  // - c.icon が "UI_..." の場合 → Enka
-  // - それ以外 → fallback
+  // アイコンURL（ハイブリッド）
+  // 優先順位:
+  // 1) JSONの icon が "./assets/..." → ローカル（正面アイコン差し替え用）
+  // 2) JSONの icon が "UI_..." → Enka (side)
+  // 3) それ以外 → まず jmp.blue を試す（正面）
+  //
+  // ※ jmp.blue が404なら <img onerror> で Enka に自動で落とす
   // -------------------------
+  function enkaUrlFromChar(c){
+    // JSONがUI_アイコンを持ってる場合はそれを使う
+    const ic = c?.icon;
+    if (typeof ic === "string" && ic.trim().startsWith("UI_")) {
+      const name = ic.trim().replace(/\.(png|webp)$/i, "");
+      return `${ENKA_UI}/${name}.png`;
+    }
+    // UI名が無い場合の保険（最終fallbackに近い）
+    return fallbackIcon;
+  }
+
   function iconUrlByChar(c){
     if (!c) return fallbackIcon;
 
@@ -67,19 +82,20 @@
     if (typeof ic === "string" && ic.trim()) {
       const s = ic.trim();
 
-      // ローカル相対パス（ドール等）
+      // ローカル相対パス（ドールや、差し替え正面アイコン）
       if (s.startsWith("./") || s.startsWith("assets/") || s.startsWith("/")) {
         return new URL(s, document.baseURI).toString();
       }
 
-      // Enka UI名（UI_...）
+      // Enka UI名（横顔）
       if (s.startsWith("UI_")) {
         const name = s.replace(/\.(png|webp)$/i, "");
         return `${ENKA_UI}/${name}.png`;
       }
     }
 
-    return fallbackIcon;
+    // それ以外は「正面」を狙って jmp.blue を試す
+    return `${BASE_ICON}/characters/${encodeURIComponent(c.id)}/icon`;
   }
 
   // -------------------------
@@ -95,7 +111,6 @@
     if (typeof e === "string" && ELEM_JP[e]) return ELEM_JP[e];
 
     const id = String(c?.id || "");
-    // traveler-anemo / doll-geo 形式
     if (id.startsWith("traveler-") || id.startsWith("doll-")) {
       const parts = id.split("-");
       const elem = parts[1];
@@ -104,7 +119,7 @@
     return null;
   }
 
-  // ---- レア度取得（データ側にあれば使う）----
+  // ---- レア度取得 ----
   function getRarity(c){
     const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
     const n = Number(v);
@@ -142,14 +157,19 @@
     const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
     const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
 
+    // ★ここが肝：data-enka に「失敗時の代替URL」を入れておく
+    const enkaFallback = enkaUrlFromChar(c);
+
     return `
       <div class="card"
            data-id="${escapeHTML(c.id)}"
            title="${escapeHTML(c.name)} (${escapeHTML(c.id)})">
         ${leftBadge}
         ${rightBadge}
-        <img class="face ${cls}" src="${iconUrlByChar(c)}"
-             onerror="this.onerror=null;this.src='${fallbackIcon}';" />
+        <img class="face ${cls}"
+             src="${iconUrlByChar(c)}"
+             data-enka="${escapeHTML(enkaFallback)}"
+             onerror="this.onerror=null; this.src=this.dataset.enka || '${fallbackIcon}';" />
         <div>
           <div><b>${escapeHTML(c.name)}</b></div>
         </div>
@@ -249,7 +269,6 @@
     const k = Number(ownedK?.value || 0);
     const picks = [...sampleK(owned, k), ...sampleK(unowned, 4-k)];
 
-    // シャッフル
     for (let i = picks.length - 1; i > 0; i--) {
       const j = sysRandomInt(i + 1);
       [picks[i], picks[j]] = [picks[j], picks[i]];
@@ -257,7 +276,7 @@
     return picks;
   }
 
-  // ---- 抽選結果表示：横並びグリッド ----
+  // ---- 抽選結果表示（横並び）----
   function renderResult(picks) {
     if (!result) return;
 
@@ -269,12 +288,16 @@
           const rarity = getRarity(c);
           const leftBadge = elem ? `<span class="corner-badge left">${escapeHTML(elem)}</span>` : "";
           const rightBadge = rarity ? `<span class="corner-badge">★${rarity}</span>` : "";
+          const enkaFallback = enkaUrlFromChar(c);
+
           return `
             <div class="card">
               ${leftBadge}
               ${rightBadge}
-              <img class="face owned" style="width:64px;height:64px;" src="${iconUrlByChar(c)}"
-                   onerror="this.onerror=null;this.src='${fallbackIcon}';" />
+              <img class="face owned" style="width:64px;height:64px;"
+                   src="${iconUrlByChar(c)}"
+                   data-enka="${escapeHTML(enkaFallback)}"
+                   onerror="this.onerror=null; this.src=this.dataset.enka || '${fallbackIcon}';" />
               <div>
                 <div style="font-size:16px;"><b>${escapeHTML(c.name)}</b> <span class="badge">${escapeHTML(c.id)}</span></div>
                 <div class="small">EN: ${escapeHTML(c.en || "")}</div>
@@ -302,12 +325,8 @@
     HAS_RARITY = ALL.some(c => getRarity(c) === 4 || getRarity(c) === 5);
 
     if (rarityFilter) {
-      if (!HAS_RARITY) {
-        rarityFilter.value = "all";
-        rarityFilter.disabled = true;
-      } else {
-        rarityFilter.disabled = false;
-      }
+      rarityFilter.disabled = !HAS_RARITY;
+      if (!HAS_RARITY) rarityFilter.value = "all";
     }
 
     if (maxShow) {
