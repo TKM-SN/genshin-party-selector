@@ -8,9 +8,9 @@
   // ローカルアイコン置き場
   const LOCAL_ICON_DIR = new URL("./assets/icons/", document.baseURI).toString();
 
-  // 旅人・ドールは「1枚固定」
-  const TRAVELER_LOCAL = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
-  const DOLL_LOCAL     = new URL("./assets/icons/doll.webp", document.baseURI).toString();
+  // 旅人・ドールの「基本」1枚
+  const TRAVELER_LOCAL_BASE = new URL("./assets/icons/traveler.webp", document.baseURI).toString();
+  const DOLL_LOCAL          = new URL("./assets/icons/doll.webp", document.baseURI).toString();
 
   const KEY_OWNED = "genshin_owned_ids_v2";
   const KEY_LAST  = "genshin_last_draw_ids_v2";
@@ -39,7 +39,7 @@
   let HAS_RARITY = false;
 
   // 最終フォールバック（最悪ここへ）
-  const fallbackIcon = TRAVELER_LOCAL;
+  const fallbackIcon = TRAVELER_LOCAL_BASE;
 
   function loadJSON(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; }
@@ -59,19 +59,65 @@
     ownedKWrap.style.display = mode.value.startsWith("混ぜる") ? "" : "none";
   }
 
+  // ===== 属性の表示用 =====
+  const ELEM_JP = {
+    anemo: "風", geo: "岩", electro: "雷", dendro: "草",
+    hydro: "水", pyro: "炎", cryo: "氷"
+  };
+
+  // 旅人IDから element 推測（traveler-pyro 等）
+  function elementFromId(id){
+    const s = String(id || "");
+    const m = s.match(/^(traveler|doll)-([a-z]+)$/);
+    if (!m) return null;
+    const elem = m[2];
+    return ELEM_JP[elem] ? elem : null;
+  }
+
+  function elemBadgeFromChar(c){
+    // ① データの element を最優先（ドールで確実に出すため）
+    const e = typeof c?.element === "string" ? c.element.trim().toLowerCase() : "";
+    if (ELEM_JP[e]) return ELEM_JP[e];
+
+    // ② special が traveler/doll ならIDから推測
+    const sp = String(c?.special || "").toLowerCase();
+    const id = String(c?.id || "");
+    if (sp === "traveler" || sp === "doll" || id.startsWith("traveler-") || id.startsWith("doll-")) {
+      const guessed = elementFromId(id);
+      if (guessed && ELEM_JP[guessed]) return ELEM_JP[guessed];
+    }
+    return null;
+  }
+
+  function getRarity(c){
+    const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
+    const n = Number(v);
+    return (n === 4 || n === 5) ? n : null;
+  }
+
   // ===== アイコンURL生成 =====
+  // 旅人：traveler-<elem>.webp を先に試して、無ければ traveler.webp
+  function travelerPreferredLocal(c){
+    const id = String(c?.id || "");
+    const elem = elementFromId(id); // pyro/hydro/... or null
+    if (elem) {
+      return `${LOCAL_ICON_DIR}traveler-${encodeURIComponent(elem)}.webp`;
+    }
+    return TRAVELER_LOCAL_BASE;
+  }
+
   function localIconUrlByChar(c){
     const id = String(c?.id || "");
     if (!id) return fallbackIcon;
 
-    if (id.startsWith("traveler-")) return TRAVELER_LOCAL;
+    if (id.startsWith("traveler-")) return travelerPreferredLocal(c);
     if (id.startsWith("doll-"))     return DOLL_LOCAL;
 
     return `${LOCAL_ICON_DIR}${encodeURIComponent(id)}.webp`;
   }
 
   function remoteIconUrlByChar(c){
-    // jmp_id を入れてるならそれ優先、無ければ id
+    // jmp_id があるならそれ優先、無ければ id
     const rid = String(c?.jmp_id || c?.id || "");
     if (!rid) return `${BASE_ICON}/characters/traveler-anemo/icon`;
 
@@ -94,38 +140,12 @@
         img.src = fallbackIcon;
         return;
       }
-      // fallback もダメなら終了（無限ループ防止）
       img.onerror = null;
     } catch (e) {
-      // 何かあっても落とさない
       img.onerror = null;
       img.src = fallbackIcon;
     }
   };
-
-  const ELEM_JP = {
-    anemo: "風", geo: "岩", electro: "雷", dendro: "草",
-    hydro: "水", pyro: "炎", cryo: "氷"
-  };
-
-  function elemBadgeFromChar(c){
-    const e = c?.element;
-    if (typeof e === "string" && ELEM_JP[e]) return ELEM_JP[e];
-
-    const id = String(c?.id || "");
-    if (id.startsWith("traveler-") || id.startsWith("doll-")) {
-      const parts = id.split("-");
-      const elem = parts[1];
-      return ELEM_JP[elem] || null;
-    }
-    return null;
-  }
-
-  function getRarity(c){
-    const v = c?.rarity ?? c?.stars ?? c?.star ?? c?.rank;
-    const n = Number(v);
-    return (n === 4 || n === 5) ? n : null;
-  }
 
   function updateStatus(extra="") {
     if (!ALL.length) {
