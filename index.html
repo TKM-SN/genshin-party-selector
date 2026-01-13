@@ -24,10 +24,6 @@
       border:1px solid rgba(0,0,0,0.08);
       margin:6px 0;
       background:#fff;
-
-      /* ★ バッジの基準＆切れ防止（念のため） */
-      position: relative;
-      overflow: visible;
     }
 
     .face{
@@ -35,10 +31,6 @@
       user-select:none; cursor:pointer;
       transition: filter .15s ease, transform .05s ease;
       display:block;
-
-      /* 画像がバッジを覆わないように */
-      position: relative;
-      z-index: 1;
     }
     .face:active{ transform: scale(.98); }
 
@@ -80,18 +72,12 @@
 
       text-align: center;
       cursor: pointer;
-
-      /* バッジ用（明示） */
-      position: relative;
-      overflow: visible;
+      position: relative; /* バッジ用 */
     }
     #list .face{
       width: 72px !important;
       height: 72px !important;
       border-radius: 14px !important;
-
-      position: relative;
-      z-index: 1;
     }
     /* 一覧は文字を隠す（検索はJS側なのでOK） */
     #list .card > div{
@@ -109,9 +95,6 @@
       border:1px solid rgba(0,0,0,.18);
       background: rgba(255,255,255,.92);
       pointer-events:none;
-
-      /* これが本命：最前面固定 */
-      z-index: 50;
     }
     .corner-badge.left{
       left:6px;
@@ -130,8 +113,51 @@
     /* 抽選結果のカードは横レイアウトのまま */
     #resultCards .card{
       margin: 0;
-      position: relative;
-      overflow: visible;
+      position: relative; /* バッジ用 */
+    }
+
+    /* =========================
+       画面最下部中央：権利者向けお知らせ（閉じる×付き）
+       ========================= */
+    #rightsNotice{
+      position: fixed;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      z-index: 9999;
+
+      max-width: min(92vw, 860px);
+      padding: 10px 44px 10px 14px; /* 右側に×のスペース */
+      border-radius: 12px;
+
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(0,0,0,.18);
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+    #rightsNotice .close{
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,.12);
+      background: rgba(255,255,255,.9);
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+    }
+    #rightsNotice .close:active{
+      transform: scale(.98);
+    }
+    #rightsNotice .mini{
+      opacity: .85;
     }
   </style>
 </head>
@@ -189,6 +215,40 @@
 
   <div id="result"></div>
 
+  <!-- ここはあなたの既存JS -->
   <script src="./app.js"></script>
+
+  <!-- 画面最下部中央の警告（×で閉じられる） -->
+  <div id="rightsNotice" role="status" aria-live="polite">
+    <div><b>このサイトは非公式のファンメイドWebツールです。</b></div>
+    <div class="mini">原神 © COGNOSPHERE.</div>
+    <div class="mini">お問い合わせフォームは現在準備中です。</div>
+    <div class="mini">権利者様からお問い合わせフォームへ連絡があった場合速やかに対応します。</div>
+    <button class="close" type="button" aria-label="閉じる">×</button>
+  </div>
+
+  <script>
+    // 「×で閉じたら次回から表示しない」ために localStorage を使う
+    (function(){
+      const KEY = "rights_notice_dismissed_v1";
+      const notice = document.getElementById("rightsNotice");
+      if (!notice) return;
+
+      // 既に閉じていたら非表示
+      try {
+        if (localStorage.getItem(KEY) === "1") {
+          notice.style.display = "none";
+          return;
+        }
+      } catch (_) {}
+
+      // 閉じる処理
+      const btn = notice.querySelector(".close");
+      btn?.addEventListener("click", () => {
+        notice.style.display = "none";
+        try { localStorage.setItem(KEY, "1"); } catch (_) {}
+      });
+    })();
+  </script>
 </body>
 </html>
